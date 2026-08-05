@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#05070f">
-<title>Camino a Canton — Simulador de Carrera NFL</title>
+<title>El G.O.A.T. — Simulador de Carrera NFL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
@@ -1338,7 +1338,7 @@ function siteHeader(){
   return `
     <div class="site-header">
       <img src="${LOGO_DATA_URI}" alt="PlaticaPatriot">
-      <div class="brand">PLATICAPATRIOT<small>Camino a Canton — Simulador de Carrera</small></div>
+      <div class="brand">PLATICAPATRIOT<small>El G.O.A.T. — Simulador de Carrera</small></div>
       <a href="https://www.paypal.com/ncp/payment/JWNYCGQ3SMW7J" target="_blank" rel="noopener" class="header-donate-btn" title="Apoyar el proyecto">☕</a>
     </div>
   `;
@@ -1491,7 +1491,7 @@ function renderMenu(){
   const best = loadHistory()[0];
   el(`
     <div class="eyebrow">Simulador de Carrera · ¿Llegas a la estatua?</div>
-    <h1 class="display">Camino a <span>Canton</span></h1>
+    <h1 class="display">EL <span>G.O.A.T.</span></h1>
     <p class="lead">Elige tu dificultad y empieza tu historia, o compite en la Carrera del Día con la misma suerte que el resto del mundo.</p>
     <div class="card">
       <h2 class="section">Dificultad</h2>
@@ -1554,7 +1554,7 @@ function renderIntro(){
   const canContinue = S.name && S.posCode && numValid;
   el(`
     <div class="eyebrow">Simulador de Carrera · ¿Llegas a la estatua?</div>
-    <h1 class="display">Camino a <span>Canton</span></h1>
+    <h1 class="display">EL <span>G.O.A.T.</span></h1>
     <p class="lead">Todo arranca a los 16, siendo la máxima figura de tu preparatoria. Elige tu posición, tu número y tu nombre: cada temporada vas a tomar decisiones que afectan tu nivel, salud, fama, química de equipo y presión mediática — y van a construir, o destruir, tu legado.</p>
     <div class="card">
       <div class="name-number-row">
@@ -3425,7 +3425,7 @@ function checkRecords(){
 function shareCardHtml(){
   return `
     <div id="shareCard" style="background:linear-gradient(160deg, #101d40, #0c1836); border:2px solid var(--gold); border-radius:16px; padding:26px 22px; text-align:center;">
-      <div style="font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:var(--gold); margin-bottom:10px;">CAMINO A CANTON · PLATICAPATRIOT</div>
+      <div style="font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:var(--gold); margin-bottom:10px;">EL G.O.A.T. · PLATICAPATRIOT</div>
       <div style="display:flex; justify-content:center; margin-bottom:12px;">${jerseyHtml(S.team, S.jerseyNumber, 84)}</div>
       <div style="font-family:'Anton',sans-serif; font-size:28px; color:#fff; text-transform:uppercase;">${S.name}</div>
       <div style="font-family:'Oswald',sans-serif; font-size:13px; color:var(--chalk-dim); margin-bottom:14px;">${pos().label} #${S.jerseyNumber} · ${S.team.name}</div>
@@ -3510,7 +3510,7 @@ function renderEnd(){
     if(typeof html2canvas === 'undefined'){ alert('No se pudo cargar el generador de imagen. Intenta de nuevo con conexión a internet.'); return; }
     html2canvas(node, {backgroundColor:'#0c1836', scale:2}).then(canvas=>{
       const link = document.createElement('a');
-      link.download = `${S.name.replace(/\s+/g,'_')}_camino_a_canton.png`;
+      link.download = `${S.name.replace(/\s+/g,'_')}_el_goat.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     });
