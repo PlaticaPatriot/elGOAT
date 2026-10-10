@@ -1579,11 +1579,11 @@ const EVENT_POOL = [
       {label:"Ir a fondo, sin pensar en el entrenamiento del día siguiente", tags:[{t:'up',s:'+Fama'},{t:'risk',s:'Riesgo alto'}], fx:{fame:5,quimica:5,health:-8,ovr:-3},
         feedback:"La noche en Miami se volvió leyenda entre tus compañeros, pero llegaste al entrenamiento hecho pedazos."},
     ]},
-  {groups:['all'], icon:"Relaciones con la Prensa", text:()=>`Tu liniero ofensivo permitió una captura decisiva en el último partido y los micrófonos de ESPN te están esperando en la salida del vestidor.`,
+  {groups:['all'], icon:"Relaciones con la Prensa", text:()=>`Tu liniero ofensivo permitió una captura decisiva en el último partido y los micrófonos de la televisión te están esperando en la salida del vestidor.`,
     choices:[
       {label:"Dejarlo mal parado frente a los micrófonos", tags:[{t:'up',s:'+Fama'},{t:'down',s:'-Química'}], fx:{fame:5,quimica:-8,coachTrust:-5},
         feedback:"Tus palabras dejaron mal parado a tu compañero. Los reporteros lo repitieron toda la semana, y el entrenador tomó nota de tu actitud."},
-      {label:"Asumir la culpa tú mismo ante ESPN", tags:[{t:'up',s:'+Química'},{t:'down',s:'-Fama'}], fx:{quimica:8,fame:-3,legacy:2,coachTrust:6},
+      {label:"Asumir la culpa tú mismo ante las cámaras", tags:[{t:'up',s:'+Química'},{t:'down',s:'-Fama'}], fx:{quimica:8,fame:-3,legacy:2,coachTrust:6},
         feedback:"Asumiste la responsabilidad en cámara. Tu compañero no lo olvida, y el entrenador confía más en ti."},
       {label:"Responder con generalidades sin señalar a nadie", tags:[{t:'info',s:'Neutral'}], fx:{presion:-3},
         feedback:"Diste una respuesta genérica que no le dio material a nadie. La nota murió sola."},
@@ -1903,22 +1903,139 @@ function playTone(freq, duration, type, delay, volume, isMusic){
     osc.start(startAt); osc.stop(startAt+duration);
   }catch(e){}
 }
-let _musicTimer = null, _musicStep = 0;
-const MUSIC_CHORDS = [[110,220,261.6,329.6],[87.3,174.6,220,261.6],[130.8,261.6,329.6,392],[98,196,246.9,293.7]];
-function musicTick(){
-  const ch = MUSIC_CHORDS[_musicStep % MUSIC_CHORDS.length];
-  ch.forEach((f,i)=> playTone(f, 4.6, i===0?'sine':'triangle', 0, i===0?0.05:0.022, true));
-  [2,3,1,3].forEach((idx,i)=> playTone(ch[idx]*2, 0.9, 'sine', 0.8+i*0.9, 0.018, true));
-  _musicStep++;
+// ---------- Motor de música dinámica (sintetizada, sin archivos) ----------
+const MOODS = {
+  hype:    {bpm:120, root:110,   minor:false, prog:[0,5,7,5],  kick:'x...x...x...x...', snare:'....x.......x...', hat:'..x...x...x...x.', bass:'x..x..x.x..x..x.', lead:'x.x..x.x..x.x..x', leadWave:'triangle', pad:.030},
+  drive:   {bpm:132, root:98,    minor:true,  prog:[0,0,8,10], kick:'x...x...x...x...', snare:'....x.......x...', hat:'x.xxx.xxx.xxx.xx', bass:'x.x.x.x.x.x.x.x.', lead:'x..x..x...x.x..x', leadWave:'square',   pad:.022},
+  anthem:  {bpm:92,  root:87.3,  minor:false, prog:[0,7,9,5],  kick:'x.......x.......', snare:'....x.......x...', hat:'x.x.x.x.x.x.x.x.', bass:'x.......x.......', lead:'x...x...x.......', leadWave:'triangle', pad:.045},
+  groove:  {bpm:108, root:110,   minor:true,  prog:[0,0,5,7],  kick:'x..x..x...x.x...', snare:'....x.......x..x', hat:'x.x.x.x.x.x.x.xx', bass:'x..x..x..x.x..x.', lead:'x...x..x....x.x.', leadWave:'triangle', pad:.028},
+  tension: {bpm:140, root:82.4,  minor:true,  prog:[0,0,1,0],  kick:'x..xx..xx..x..x.', snare:'....x.......x...', hat:'xxxxxxxxxxxxxxxx', bass:'x.xxx.xxx.xxx.xx', lead:'x...x..x..x...x.', leadWave:'square',   pad:.020},
+  dark:    {bpm:72,  root:73.4,  minor:true,  prog:[0,8,5,7],  kick:'x.......x.......', snare:'................', hat:'................', bass:'x...............', lead:'....x.......x...', leadWave:'sine',     pad:.050},
+  triumph: {bpm:124, root:130.8, minor:false, prog:[0,5,7,0],  kick:'x...x...x...x...', snare:'....x.......x...', hat:'x.x.x.x.x.x.x.x.', bass:'x.x.x.x.x.x.x.x.', lead:'xx.xx.xx.x.xx.x.', leadWave:'triangle', pad:.040},
+  chill:   {bpm:98,  root:98,    minor:false, prog:[0,9,5,7],  kick:'x.......x.....x.', snare:'....x.......x...', hat:'..x...x...x...x.', bass:'x.....x.x.......', lead:'x.....x...x.....', leadWave:'sine',     pad:.034},
+};
+const SCALE_MAJOR = [0,2,4,7,9], SCALE_MINOR = [0,3,5,7,10];
+let _mus = {timer:null, gain:null, noise:null, mood:'hype', step:0, bar:0, next:0, hits:0, started:false};
+
+function moodForScreen(){
+  if(!S) return 'hype';
+  const sc = S.screen;
+  if(sc==='menu' || sc==='history' || sc==='intro' || sc==='highschool') return 'hype';
+  if(sc==='prep' || sc==='combine' || sc==='combinesummary') return 'drive';
+  if(sc==='bigboard' || sc==='draftcard' || sc==='draftresult') return 'anthem';
+  if(sc==='injurymoment') return 'dark';
+  if(sc==='celebration' || sc==='hofinduction') return 'triumph';
+  if(sc==='retirementceremony' || sc==='end' || sc==='postcareer' || sc==='retireprompt') return 'anthem';
+  if(sc==='event'){
+    const ev = S.pendingEvent;
+    if(ev && (ev.banner || (ev.resolveType && ev.resolveType!=='normal'))) return 'tension';
+    return 'groove';
+  }
+  return 'chill';
+}
+function musicNoise(ctx){
+  if(_mus.noise) return _mus.noise;
+  const len = ctx.sampleRate * 0.5;
+  const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+  const d = buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i] = Math.random()*2-1;
+  _mus.noise = buf; return buf;
+}
+function mKick(ctx,t,vol){
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type='sine'; o.frequency.setValueAtTime(150,t); o.frequency.exponentialRampToValueAtTime(42,t+0.13);
+  g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.001,t+0.2);
+  o.connect(g); g.connect(_mus.gain); o.start(t); o.stop(t+0.22);
+}
+function mNoise(ctx,t,dur,vol,hp){
+  const src = ctx.createBufferSource(); src.buffer = musicNoise(ctx);
+  const f = ctx.createBiquadFilter(); f.type='highpass'; f.frequency.value = hp;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.001,t+dur);
+  src.connect(f); f.connect(g); g.connect(_mus.gain); src.start(t); src.stop(t+dur+0.02);
+}
+function mNote(ctx,t,freq,dur,type,vol,attack){
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type=type; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001,t);
+  g.gain.exponentialRampToValueAtTime(vol,t+(attack||0.01));
+  g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g); g.connect(_mus.gain); o.start(t); o.stop(t+dur+0.02);
+}
+function musicStep(ctx,t,m){
+  const st = _mus.step, bar = _mus.bar;
+  const rootOff = m.prog[bar % m.prog.length];
+  const stepDur = 60 / m.bpm / 4;
+  if(m.kick[st]==='x') mKick(ctx,t,0.34);
+  if(m.snare[st]==='x'){ mNoise(ctx,t,0.14,0.16,1200); mNote(ctx,t,190,0.1,'triangle',0.08,0.002); }
+  if(m.hat[st]==='x') mNoise(ctx,t,0.04,st%4===2?0.07:0.04,7000);
+  if(m.bass[st]==='x'){
+    const iv = [0,0,7,0,12,0,7,5][_mus.hits++ % 8];
+    mNote(ctx,t,m.root*Math.pow(2,(rootOff+iv)/12),stepDur*1.7,'sawtooth',0.10,0.005);
+  }
+  if(m.lead[st]==='x'){
+    const sc = m.minor ? SCALE_MINOR : SCALE_MAJOR;
+    const deg = sc[(st*3 + bar*2) % sc.length];
+    mNote(ctx,t,m.root*4*Math.pow(2,(rootOff+deg)/12),stepDur*2.4,m.leadWave,0.055,0.01);
+  }
+  if(st===0){
+    const third = m.minor ? 3 : 4;
+    [0,third,7].forEach(iv=> mNote(ctx,t,m.root*2*Math.pow(2,(rootOff+iv)/12),stepDur*15.5,'triangle',m.pad,0.35));
+  }
+}
+function musicSchedule(){
+  const ctx = _audioCtx;
+  if(!ctx || soundMode()!=='all') return;
+  const m = MOODS[_mus.mood];
+  const stepDur = 60 / m.bpm / 4;
+  while(_mus.next < ctx.currentTime + 0.25){
+    try{ musicStep(ctx,_mus.next,m); }catch(e){}
+    _mus.next += stepDur;
+    _mus.step++;
+    if(_mus.step >= 16){ _mus.step = 0; _mus.bar++; }
+  }
+}
+function setMusicMood(mood){
+  if(!MOODS[mood] || _mus.mood === mood) return;
+  _mus.mood = mood;
+  const ctx = _audioCtx;
+  if(!ctx || !_mus.gain || !_mus.timer) return;
+  const now = ctx.currentTime;
+  _mus.gain.gain.cancelScheduledValues(now);
+  _mus.gain.gain.setTargetAtTime(0.0001, now, 0.05);
+  _mus.gain.gain.setTargetAtTime(0.7, now+0.32, 0.08);
+  _mus.step = 0; _mus.bar = 0; _mus.hits = 0; _mus.next = now + 0.34;
 }
 function startMusic(){
-  if(_musicTimer || soundMode()!=='all') return;
-  musicTick();
-  _musicTimer = setInterval(musicTick, 4000);
+  if(_mus.timer || soundMode()!=='all') return;
+  try{
+    if(!_audioCtx) _audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const ctx = _audioCtx;
+    if(ctx.state === 'suspended') ctx.resume();
+    _mus.gain = ctx.createGain();
+    _mus.gain.gain.value = 0.7;
+    _mus.gain.connect(ctx.destination);
+    _mus.mood = moodForScreen();
+    _mus.step = 0; _mus.bar = 0; _mus.hits = 0;
+    _mus.next = ctx.currentTime + 0.1;
+    _mus.timer = setInterval(musicSchedule, 60);
+  }catch(e){}
 }
 function stopMusic(){
-  if(_musicTimer){ clearInterval(_musicTimer); _musicTimer = null; }
+  if(_mus.timer){ clearInterval(_mus.timer); _mus.timer = null; }
+  if(_mus.gain){
+    try{ _mus.gain.gain.setTargetAtTime(0.0001, _audioCtx.currentTime, 0.05); }catch(e){}
+    const g = _mus.gain; _mus.gain = null;
+    setTimeout(()=>{ try{ g.disconnect(); }catch(e){} }, 400);
+  }
 }
+document.addEventListener('visibilitychange', ()=>{
+  if(!_audioCtx) return;
+  try{
+    if(document.hidden) _audioCtx.suspend();
+    else if(soundMode()!=='off') _audioCtx.resume();
+  }catch(e){}
+});
 function playCelebrationSound(){
   playTone(523,0.16,'sine',0);
   playTone(659,0.16,'sine',0.14);
@@ -2023,6 +2140,7 @@ function el(html){
     });
   }
   applyStageTheme();
+  if(_mus.timer) setMusicMood(moodForScreen());
   const helpBtn = document.getElementById('statsHelpBtn');
   if(helpBtn){
     helpBtn.addEventListener('click', ()=>{
@@ -4577,7 +4695,7 @@ function renderRetirementCeremony(){
 }
 
 const POST_CAREER_PATHS = [
-  {key:'commentator', icon:'🎙️', name:'Comentarista de ESPN', desc:'Tu voz sigue en cada domingo de fútbol americano, ahora analizando a la próxima generación.', money:4, legacy:3},
+  {key:'commentator', icon:'🎙️', name:'Comentarista Deportivo', desc:'Tu voz sigue en cada domingo de fútbol americano, ahora analizando a la próxima generación.', money:4, legacy:3},
   {key:'coach', icon:'📋', name:'Entrenador', desc:'Volviste al campo, esta vez con una pizarra en la mano, formando a los que vienen detrás de ti.', money:2, legacy:6},
   {key:'business', icon:'💼', name:'Empresario', desc:'Convertiste tu marca personal en un imperio fuera de las canchas.', money:10, legacy:1},
 ];
