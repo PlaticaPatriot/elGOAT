@@ -675,6 +675,19 @@ button.header-donate-btn{ font-size:16px; }
 .badge-icon{font-size:20px; line-height:1;}
 .badge-name{font-weight:600; font-size:13px; margin-top:4px;}
 .badge-hint{font-size:11px; color:var(--chalk-dim); margin-top:2px; line-height:1.3;}
+.slalom-track{position:relative; height:200px; border-radius:12px; overflow:hidden; background:linear-gradient(180deg,#0f2a1a,#0b1d12); border:1px solid var(--turf-line); display:flex;}
+.slalom-lane{flex:1; border-right:1px dashed rgba(255,255,255,.18); cursor:pointer;}
+.slalom-lane:last-of-type{border-right:none;}
+.slalom-player{position:absolute; bottom:6%; transform:translateX(-50%); font-size:30px; transition:left .08s linear; pointer-events:none;}
+.slalom-obstacle{position:absolute; transform:translateX(-50%); font-size:26px; pointer-events:none;}
+.slalom-obstacle.hit{opacity:.35; filter:grayscale(1);}
+.slalom-controls{display:flex; justify-content:space-between; gap:12px; margin-top:10px;}
+.slalom-controls .btn{width:90px; padding:12px 0; font-size:20px;}
+.playbook-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px;}
+.playbook-btn{height:64px; font-size:28px; border-radius:12px; border:1px solid var(--turf-line); background:var(--turf); color:var(--chalk); cursor:pointer; transition:transform .1s, background .1s, box-shadow .1s;}
+.playbook-btn:disabled{opacity:.7; cursor:default;}
+.playbook-btn.lit{background:var(--gold); box-shadow:0 0 18px var(--gold); transform:scale(1.08); opacity:1;}
+.playbook-btn.wrong{background:var(--danger);}
 .cinematic-hero{
   font-family:'Anton',sans-serif; text-transform:uppercase;
   font-size:clamp(30px,9vw,52px); line-height:1.02; color:#fff;
@@ -2599,8 +2612,8 @@ const COMBINE_DRILL_INFO = {
     desc:'Toca "¡DETENTE!" justo cuando el marcador esté dentro de la zona verde: cuanto más cerca del centro, mejor tu marca.'},
   bench: {title:'Press de Banca — Prueba de Fuerza',
     desc:'Tienes 5 segundos para hacer clic en "¡EMPUJA!" tantas veces como puedas. Cada clic es una repetición.'},
-  agility: {title:'Drill de Agilidad — 3 Conos',
-    desc:'Toca cada cono apenas se ilumine, en el orden correcto y lo más rápido posible.'},
+  agility: {title:'Slalom — Prueba de Agilidad',
+    desc:'Corres hacia adelante y te salen defensores al paso. Cambia de carril con ◀ y ▶ (o toca el carril) para esquivarlos. Cada choque baja tu marca.'},
 };
 
 function renderCombine(){
@@ -2700,43 +2713,73 @@ function renderAgilityDrill(){
       <p class="sub" style="margin-bottom:10px;">${info.desc}</p>
       ${bonus ? `<div class="chip" style="margin-bottom:12px;">Bono de tu preparación: <b style="color:var(--gold);">+${bonus}</b></div>` : ''}
       <div id="drillStage">
-        <div class="cone-row">
-          <div class="cone" data-idx="0">🔶</div>
-          <div class="cone" data-idx="1">🔶</div>
-          <div class="cone" data-idx="2">🔶</div>
+        <div id="slalomTrack" class="slalom-track">
+          <div class="slalom-lane" data-lane="0"></div>
+          <div class="slalom-lane" data-lane="1"></div>
+          <div class="slalom-lane" data-lane="2"></div>
+          <div id="slalomPlayer" class="slalom-player">🏃</div>
+        </div>
+        <div class="slalom-controls">
+          <button class="btn secondary" id="slalomLeft">◀</button>
+          <div class="sub" id="slalomHud" style="align-self:center;">Choques: 0</div>
+          <button class="btn secondary" id="slalomRight">▶</button>
         </div>
       </div>
     </div>
   `);
-  const order = shuffle([0,1,2]);
-  let step = 0, segStart = Date.now(), totalMs = 0;
-  const cones = document.querySelectorAll('.cone');
-  function lightCurrent(){
-    cones.forEach(c=>c.classList.remove('active'));
-    cones[order[step]].classList.add('active');
-    segStart = Date.now();
-  }
-  lightCurrent();
-  cones.forEach(c=>{
-    c.addEventListener('click', ()=>{
-      const idx = parseInt(c.dataset.idx);
-      if(idx !== order[step]) return;
-      totalMs += (Date.now()-segStart);
-      step++;
-      if(step >= 3){
-        const score = clamp(Math.round(100 - (totalMs-600)/18) + bonus, 5, 100);
-        S.combineScores.agility = score;
-        flashDrillResult(score, ()=>{ S.combineStep=3; render(); });
-      } else {
-        lightCurrent();
+  const track = document.getElementById('slalomTrack');
+  const playerEl = document.getElementById('slalomPlayer');
+  const hud = document.getElementById('slalomHud');
+  let lane = 1, hits = 0, tick = 0, spawned = 0, finished = false;
+  const WAVES = 9, GAP = 9, SPEED = 5.2;   // % de la pista por tick
+  const obstacles = [];
+  function placePlayer(){ playerEl.style.left = (lane*33.33 + 16.66) + '%'; }
+  placePlayer();
+  function move(d){ if(finished) return; lane = clamp(lane + d, 0, 2); placePlayer(); }
+  document.getElementById('slalomLeft').addEventListener('click', ()=>move(-1));
+  document.getElementById('slalomRight').addEventListener('click', ()=>move(1));
+  document.querySelectorAll('.slalom-lane').forEach(l=>{
+    l.addEventListener('click', ()=>{ if(finished) return; lane = parseInt(l.dataset.lane); placePlayer(); });
+  });
+  const timer = setInterval(()=>{
+    if(!document.getElementById('slalomTrack')){ clearInterval(timer); return; }
+    tick++;
+    if(spawned < WAVES && tick % GAP === 1){
+      const count = Math.random() < 0.4 ? 2 : 1;
+      const lanes = shuffle([0,1,2]).slice(0,count);
+      lanes.forEach(ln=>{
+        const e = document.createElement('div');
+        e.className = 'slalom-obstacle'; e.textContent = '🛡️';
+        e.style.left = (ln*33.33 + 16.66) + '%'; e.style.top = '-12%';
+        track.appendChild(e);
+        obstacles.push({lane:ln, y:-12, el:e, hit:false});
+      });
+      spawned++;
+    }
+    obstacles.forEach(o=>{
+      o.y += SPEED;
+      o.el.style.top = o.y + '%';
+      if(!o.hit && o.y >= 76 && o.y <= 94 && o.lane === lane){
+        o.hit = true; hits++;
+        o.el.classList.add('hit');
+        hud.textContent = 'Choques: ' + hits;
       }
     });
-  });
+    for(let i=obstacles.length-1;i>=0;i--){
+      if(obstacles[i].y > 110){ obstacles[i].el.remove(); obstacles.splice(i,1); }
+    }
+    if(!finished && spawned >= WAVES && obstacles.length === 0){
+      finished = true; clearInterval(timer);
+      const score = clamp(100 - hits*13 + bonus, 5, 100);
+      S.combineScores.agility = score;
+      flashDrillResult(score, ()=>{ S.combineStep=3; render(); });
+    }
+  }, 60);
 }
 
 const POSITION_DRILL_INFO = {
-  skill: {key:'extra', title:'Gauntlet Drill — Prueba de Manos', icon:'🏈',
-    desc:'Vas a recibir pases desde distintos ángulos, uno detrás de otro. Toca el balón apenas aparezca, en el orden correcto, sin fallar ninguno.'},
+  skill: {key:'extra', title:'Libro de Jugadas — Prueba Mental', icon:'🧠',
+    desc:'El coach te muestra una secuencia de rutas. Memorízala y repítela en el mismo orden: cada acierto suma, y un error termina la prueba.'},
   trench: {key:'extra', title:'Empuje de Trineo — Prueba de Potencia', icon:'💪',
     desc:'Tienes 5 segundos para hacer clic en "¡EMPUJA!" tantas veces como puedas mientras empujas el trineo de entrenamiento.'},
   front7: {key:'extra', title:'Prueba de Derribo — Tiempo de Reacción', icon:'🎯',
@@ -2756,47 +2799,71 @@ function renderExtraDrill(){
   } else if(group === 'specialist'){
     return renderExtraKickDrill();
   } else {
-    return renderExtraGauntletDrill();
+    return renderExtraPlaybookDrill();
   }
 }
 
-function renderExtraGauntletDrill(){
+function renderExtraPlaybookDrill(){
+  const ROUTES = [
+    {sym:'⬆️', name:'Go'}, {sym:'⬅️', name:'Slant izq.'}, {sym:'➡️', name:'Slant der.'}, {sym:'⬇️', name:'Hook'},
+  ];
+  const info = POSITION_DRILL_INFO.skill;
   el(`
     ${fieldTracker()}
     <div class="eyebrow">NFL Combine — Prueba 4 de 4</div>
-    <h1 class="display">Gauntlet Drill</h1>
-    <div class="card">
-      <p class="sub" style="margin-bottom:10px;">Toca el balón apenas se ilumine, en el orden correcto, lo más rápido posible.</p>
+    <h1 class="display">${info.title.split(' —')[0]}</h1>
+    <div class="card" style="text-align:center;">
+      <p class="sub" style="margin-bottom:10px;">${info.desc}</p>
       <div id="drillStage">
-        <div class="cone-row">
-          <div class="cone" data-idx="0">🏈</div>
-          <div class="cone" data-idx="1">🏈</div>
-          <div class="cone" data-idx="2">🏈</div>
+        <div class="sub" id="playbookMsg" style="margin-bottom:10px; font-weight:600;">Memoriza la secuencia...</div>
+        <div class="playbook-grid">
+          ${ROUTES.map((r,i)=>`<button class="playbook-btn" data-i="${i}" disabled>${r.sym}</button>`).join('')}
         </div>
+        <div class="sub" id="playbookProg" style="margin-top:10px;">0 / 5</div>
       </div>
     </div>
   `);
-  const order = shuffle([0,1,2]);
-  let step = 0, segStart = Date.now(), totalMs = 0;
-  const cones = document.querySelectorAll('.cone');
-  function lightCurrent(){
-    cones.forEach(c=>c.classList.remove('active'));
-    cones[order[step]].classList.add('active');
-    segStart = Date.now();
+  const LEN = 5;
+  const seq = Array.from({length:LEN}, ()=>Math.floor(Math.random()*4));
+  const btns = document.querySelectorAll('.playbook-btn');
+  const msg = document.getElementById('playbookMsg');
+  const prog = document.getElementById('playbookProg');
+  let pos_ = 0, accepting = false, done = false;
+  function flash(i, ms){
+    btns[i].classList.add('lit');
+    setTimeout(()=>btns[i].classList.remove('lit'), ms);
   }
-  lightCurrent();
-  cones.forEach(c=>{
-    c.addEventListener('click', ()=>{
-      const idx = parseInt(c.dataset.idx);
-      if(idx !== order[step]) return;
-      totalMs += (Date.now()-segStart);
-      step++;
-      if(step >= 3){
-        const score = clamp(Math.round(100 - (totalMs-600)/18), 5, 100);
-        S.combineScores.extra = score;
-        flashDrillResult(score, finishCombine);
+  function finish(){
+    if(done) return; done = true; accepting = false;
+    const score = clamp(Math.round(pos_/LEN*100), 5, 100);
+    S.combineScores.extra = score;
+    flashDrillResult(score, finishCombine);
+  }
+  function showSeq(k){
+    if(!document.getElementById('playbookMsg')) return;
+    if(k >= seq.length){
+      msg.textContent = '¡Tu turno! Repite la secuencia';
+      btns.forEach(b=>b.disabled = false);
+      accepting = true;
+      return;
+    }
+    flash(seq[k], 520);
+    setTimeout(()=>showSeq(k+1), 750);
+  }
+  setTimeout(()=>showSeq(0), 900);
+  btns.forEach(b=>{
+    b.addEventListener('click', ()=>{
+      if(!accepting || done) return;
+      const i = parseInt(b.dataset.i);
+      flash(i, 180);
+      if(i === seq[pos_]){
+        pos_++;
+        prog.textContent = pos_ + ' / ' + LEN;
+        if(pos_ >= LEN) finish();
       } else {
-        lightCurrent();
+        b.classList.add('wrong');
+        msg.textContent = 'Te equivocaste en la jugada';
+        finish();
       }
     });
   });
@@ -3277,6 +3344,17 @@ function saveCareer(){
   try{
     const copy = Object.assign({}, S, {pendingEvent:null, pendingRarities:[], pendingSeasonPhase1:null, pendingCelebration:null, pendingInjury:null, pendingFeedback:null, pendingSeasonNote:null, screen:'event'});
     localStorage.setItem(SAVE_KEY, JSON.stringify({v:1, savedAt:Date.now(), state:copy}));
+  }catch(e){}
+}
+function patchSave(fn){
+  if(!S || S.isDaily) return;
+  try{
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(!raw) return;
+    const d = JSON.parse(raw);
+    if(!d || !d.state) return;
+    fn(d.state);
+    localStorage.setItem(SAVE_KEY, JSON.stringify(d));
   }catch(e){}
 }
 function loadSave(){
@@ -4435,7 +4513,7 @@ function renderShop(){
       <div class="money-line" style="margin-bottom:16px;">
         <span class="money-amount">${S.skillPoints} puntos de habilidad disponibles</span>
       </div>
-      <p class="sub" style="margin-bottom:14px;">Ganas 1 punto de habilidad por cada temporada completa. Invertilos en lo que defina tu estilo de juego como ${pos().label}.</p>
+      <p class="sub" style="margin-bottom:14px;">Ganas 1 punto de habilidad por cada temporada completa. Invierte tus puntos en lo que defina tu estilo de juego como ${pos().label}.</p>
       <div class="shop-grid">${rows}</div>
       <button class="btn" id="backBtn" style="width:100%; margin-top:16px;">← Volver</button>
     </div>
@@ -4455,6 +4533,18 @@ function renderShop(){
         else if(k==='durability') S.durability = clamp(S.durability + node.effect.durability, 0, 100);
       });
       S.peakOvr = Math.max(S.peakOvr, S.ovr);
+      patchSave(st=>{
+        st.skillPoints = Math.max(0, (st.skillPoints||0) - 1);
+        st.skills = st.skills || {};
+        st.skills[node.key] = (st.skills[node.key]||0) + 1;
+        Object.keys(node.effect).forEach(k=>{
+          if(k==='ovr') st.ovr = clamp((st.ovr||0) + node.effect.ovr, 30, 99);
+          else if(k==='iq') st.iq = clamp((st.iq||0) + node.effect.iq, 0, 100);
+          else if(k==='clutch') st.clutch = clamp((st.clutch||0) + node.effect.clutch, 0, 100);
+          else if(k==='durability') st.durability = clamp((st.durability||0) + node.effect.durability, 0, 100);
+        });
+        st.peakOvr = Math.max(st.peakOvr||0, st.ovr||0);
+      });
       render();
     });
   });
@@ -4547,6 +4637,19 @@ function renderStore(){
       } else if(key === 'analyst'){
         S.iq = clamp(S.iq + 6, 0, 100);
       }
+      const kind = elm.dataset.kind, fameD = parseFloat(elm.dataset.fame||0), legD = parseFloat(elm.dataset.legacy||0), quiD = parseFloat(elm.dataset.quimica||0);
+      patchSave(st=>{
+        st.ownedItems = st.ownedItems || {};
+        st.ownedItems[key] = true;
+        st.money = Math.max(0, Math.round(((st.money||0) - price)*10)/10);
+        if(kind === 'luxury'){
+          st.fame = clamp((st.fame||0) + fameD, 0, 100);
+          if(legD) st.legacy = (st.legacy||0) + legD;
+          if(quiD) st.quimica = clamp((st.quimica||0) + quiD, 0, 100);
+        } else if(key === 'analyst'){
+          st.iq = clamp((st.iq||0) + 6, 0, 100);
+        }
+      });
       render();
     });
   });
