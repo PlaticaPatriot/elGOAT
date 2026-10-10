@@ -27,15 +27,26 @@ body{
   background:
     repeating-linear-gradient(180deg, rgba(255,255,255,.035) 0px, rgba(255,255,255,.035) 2px, transparent 2px, transparent 110px),
     repeating-linear-gradient(90deg, rgba(255,255,255,.02) 0px, rgba(255,255,255,.02) 1px, transparent 1px, transparent 90px),
-    radial-gradient(circle at 15% 8%, rgba(200,16,46,.10), transparent 38%),
-    radial-gradient(circle at 85% 6%, rgba(111,143,176,.09), transparent 38%),
-    radial-gradient(circle at 50% 100%, rgba(200,16,46,.06), transparent 45%),
+    radial-gradient(circle at 15% 8%, rgba(200,16,46,.14), transparent 40%),
+    radial-gradient(circle at 85% 4%, rgba(111,143,176,.12), transparent 40%),
+    radial-gradient(circle at 50% 100%, rgba(200,16,46,.08), transparent 48%),
     radial-gradient(ellipse at top, #16265a 0%, var(--turf-dark) 55%);
   background-attachment: fixed;
   color:var(--chalk);
   font-family:'Inter',sans-serif;
   min-height:100vh;
   padding:0;
+  scrollbar-color: var(--gold-dim) var(--turf-dark);
+  scrollbar-width: thin;
+}
+body::-webkit-scrollbar{ width:10px; }
+body::-webkit-scrollbar-track{ background:var(--turf-dark); }
+body::-webkit-scrollbar-thumb{ background:linear-gradient(180deg, var(--gold), var(--gold-dim)); border-radius:6px; }
+body::-webkit-scrollbar-thumb:hover{ background:var(--gold); }
+.screen-enter{ animation: screenFadeIn .32s ease both; }
+@keyframes screenFadeIn{
+  from{ opacity:0; transform:translateY(10px); }
+  to{ opacity:1; transform:translateY(0); }
 }
 #app{
   max-width:780px;
@@ -197,20 +208,7 @@ p.lead{color:var(--chalk-dim); line-height:1.55; margin:0 0 16px; font-size:15px
 .sub{color:var(--chalk-dim); font-size:13px; line-height:1.5;}
 
 /* ---- Team badge ---- */
-.team-badge{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:44px; height:44px;
-  border-radius:50%;
-  font-family:'Bebas Neue',sans-serif;
-  font-size:14px;
-  letter-spacing:.5px;
-  flex-shrink:0;
-  border:2px solid rgba(255,255,255,.3);
-  box-shadow:0 3px 10px rgba(0,0,0,.45), inset 0 2px 3px rgba(255,255,255,.25), inset 0 -3px 6px rgba(0,0,0,.3);
-}
-.team-badge.lg{width:64px; height:64px; font-size:19px;}
+.team-shield{ flex-shrink:0; filter:drop-shadow(0 3px 8px rgba(0,0,0,.5)); }
 .jersey-svg{ flex-shrink:0; filter:drop-shadow(0 4px 8px rgba(0,0,0,.55)); }
 
 /* ---- Celebration confetti ---- */
@@ -480,6 +478,14 @@ input[type=text]:focus,input[type=number]:focus{outline:none; border-color:var(-
 input[type=number]{ font-family:'Bebas Neue',sans-serif; font-size:20px; text-align:center; }
 .name-number-row{ display:flex; gap:12px; align-items:flex-start; }
 
+.event-graphic{
+  margin:-20px -20px 16px;
+  border-bottom:1px solid var(--turf-line);
+  overflow:hidden;
+  box-shadow:inset 0 -20px 34px -20px rgba(0,0,0,.85);
+}
+.event-graphic svg{ display:block; border-radius:0 !important; }
+
 .event-icon{
   font-family:'Bebas Neue',sans-serif;
   font-size:14px;
@@ -561,6 +567,120 @@ input[type=number]{ font-family:'Bebas Neue',sans-serif; font-size:20px; text-al
   letter-spacing:2px;
 }
 
+/* ---- Cinematic big-moment screens ---- */
+.cinematic{
+  position:relative;
+  padding:38px 24px 32px;
+  border-radius:20px;
+  text-align:center;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(200,16,46,.22), transparent 62%),
+    linear-gradient(170deg, #16265a, var(--panel) 65%);
+  border:1px solid var(--gold-dim);
+  box-shadow:0 0 0 1px rgba(200,16,46,.18), 0 22px 60px rgba(0,0,0,.6);
+  overflow:hidden;
+  margin-bottom:16px;
+}
+.cinematic::before{
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:4px;
+  background:linear-gradient(90deg, transparent, var(--gold) 25%, #ff3b5c 75%, transparent);
+}
+.cinematic::after{
+  content:'';
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(180deg, rgba(255,255,255,.03) 0 1px, transparent 1px 4px);
+  pointer-events:none;
+}
+.cinematic > *{ position:relative; z-index:1; }
+.cinematic-kicker{
+  font-family:'Oswald',sans-serif; font-weight:700;
+  font-size:11px; letter-spacing:4px; text-transform:uppercase;
+  color:var(--gold); margin-bottom:12px;
+}
+.college-banner{
+  background:linear-gradient(135deg, rgba(200,16,46,.10), transparent 70%), var(--turf);
+  border:1px solid var(--gold-dim);
+  border-left:4px solid var(--gold);
+  border-radius:12px;
+  padding:12px 14px;
+  margin-bottom:14px;
+}
+.stats-help{
+  background:rgba(255,255,255,.04);
+  border:1px dashed var(--gold-dim);
+  border-radius:12px;
+  padding:12px 14px;
+  margin:10px 0;
+  font-size:13px;
+  line-height:1.45;
+}
+.stats-help ul{margin:0; padding-left:18px;}
+.stats-help li{margin:3px 0;}
+.goal-card{
+  background:linear-gradient(135deg, rgba(215,173,63,.10), transparent 70%), var(--turf);
+  border:1px solid var(--gold-dim);
+  border-left:4px solid var(--gold);
+  border-radius:12px;
+  padding:10px 14px;
+  margin:10px 0;
+}
+.goal-card .goal-text{font-weight:600; font-size:15px;}
+.ending-card{border-left:4px solid var(--gold);}
+.ending-title{font-family:'Anton',sans-serif; font-size:24px; color:var(--gold); letter-spacing:.5px;}
+.sb-ring{display:block; margin:0 auto; filter:drop-shadow(0 0 14px rgba(215,173,63,.7)); animation:ringSpin 3.4s ease-in-out infinite; transform-style:preserve-3d;}
+@keyframes ringSpin{
+  0%{transform:perspective(500px) rotateY(0deg) scale(.6); opacity:0;}
+  20%{opacity:1;}
+  60%{transform:perspective(500px) rotateY(360deg) scale(1.08);}
+  100%{transform:perspective(500px) rotateY(360deg) scale(1);}
+}
+.holo-card::after{
+  content:''; position:absolute; inset:0; border-radius:20px; pointer-events:none;
+  background:linear-gradient(115deg, transparent 30%, rgba(255,255,255,.35) 45%, transparent 60%);
+  background-size:250% 100%; animation:holoShine 3.2s linear infinite;
+}
+@keyframes holoShine{0%{background-position:150% 0;} 100%{background-position:-100% 0;}}
+.trophy-shelf-icons .trophy-icon-repeat{animation:trophyPop .5s cubic-bezier(.2,1.4,.4,1) both;}
+.trophy-shelf-icons .trophy-icon-repeat:nth-child(2){animation-delay:.08s;}
+.trophy-shelf-icons .trophy-icon-repeat:nth-child(3){animation-delay:.16s;}
+.trophy-shelf-icons .trophy-icon-repeat:nth-child(4){animation-delay:.24s;}
+.trophy-shelf-icons .trophy-icon-repeat:nth-child(n+5){animation-delay:.32s;}
+@keyframes trophyPop{0%{transform:scale(0) rotate(-25deg); opacity:0;} 100%{transform:scale(1) rotate(0); opacity:1;}}
+@media (prefers-reduced-motion: reduce){
+  .sb-ring,.holo-card::after,.trophy-shelf-icons .trophy-icon-repeat{animation:none !important;}
+}
+body::before{
+  content:''; position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:0; transition:opacity .8s ease;
+}
+body[data-stage="figura"]::before{
+  opacity:1; background:radial-gradient(ellipse at 50% -10%, rgba(111,143,176,.22), transparent 55%);
+}
+body[data-stage="consagrado"]::before{
+  opacity:1; background:radial-gradient(ellipse at 50% -10%, rgba(215,173,63,.22), transparent 55%), radial-gradient(circle at 50% 110%, rgba(215,173,63,.10), transparent 50%);
+}
+body[data-stage="leyenda"]::before{
+  opacity:1; background:radial-gradient(ellipse at 50% -10%, rgba(240,200,90,.32), transparent 58%), radial-gradient(circle at 50% 110%, rgba(215,173,63,.16), transparent 52%), radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.45) 100%);
+}
+body[data-stage="consagrado"] .site-header, body[data-stage="leyenda"] .site-header{ border-bottom-color:rgba(215,173,63,.55); }
+body[data-stage="leyenda"] .player-card{ box-shadow:0 0 0 1px rgba(215,173,63,.45), 0 8px 30px rgba(215,173,63,.12); }
+button.header-donate-btn{ font-size:16px; }
+@media (prefers-reduced-motion: reduce){ body::before{ transition:none; } }
+.badges-box{margin-top:14px; border:1px solid var(--turf-line); border-radius:12px; padding:10px 12px; background:rgba(255,255,255,.02);}
+.badges-box summary{cursor:pointer; font-weight:600; font-size:14px; list-style:none;}
+.badges-box summary::-webkit-details-marker{display:none;}
+.badge-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:10px;}
+.badge-item{border:1px solid var(--turf-line); border-radius:10px; padding:8px; opacity:.55;}
+.badge-item.unlocked{opacity:1; border-color:var(--gold-dim); background:rgba(200,16,46,.08);}
+.badge-icon{font-size:20px; line-height:1;}
+.badge-name{font-weight:600; font-size:13px; margin-top:4px;}
+.badge-hint{font-size:11px; color:var(--chalk-dim); margin-top:2px; line-height:1.3;}
+.cinematic-hero{
+  font-family:'Anton',sans-serif; text-transform:uppercase;
+  font-size:clamp(30px,9vw,52px); line-height:1.02; color:#fff;
+  margin:0 0 12px;
+  text-shadow:1px 1px 0 var(--gold-dim), 2px 2px 0 #4a0713, 3px 5px 14px rgba(0,0,0,.6), 0 0 34px rgba(200,16,46,.45);
+}
 .hof-banner{
   text-align:center;
   padding:26px 16px;
@@ -658,6 +778,19 @@ input[type=number]{ font-family:'Bebas Neue',sans-serif; font-size:20px; text-al
 /* ---- Shop (Tienda) ---- */
 .shop-grid{ display:flex; flex-direction:column; gap:8px; }
 .shop-grid-2{ display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+
+/* ---- Personal Hall of Fame gallery ---- */
+.history-gallery{ display:flex; flex-direction:column; gap:10px; }
+.history-card{
+  display:flex; align-items:center; gap:12px;
+  background:linear-gradient(135deg, rgba(255,255,255,.03), transparent), var(--turf);
+  border:1px solid var(--turf-line);
+  border-radius:12px;
+  padding:12px 14px;
+}
+.history-card-info{ flex:1; min-width:0; }
+.history-card-name{ font-family:'Oswald',sans-serif; font-weight:700; font-size:14px; color:var(--chalk); }
+.history-card-tier{ font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:.5px; color:var(--gold); margin-top:2px; }
 .shop-item{
   display:flex; align-items:center; gap:12px;
   background:var(--turf);
@@ -778,6 +911,38 @@ input[type=number]{ font-family:'Bebas Neue',sans-serif; font-size:20px; text-al
   filter:grayscale(0) drop-shadow(0 0 12px rgba(200,16,46,.7));
   transform:scale(1.15);
 }
+.reaction-target{
+  width:150px; height:150px;
+  margin:10px auto;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--turf);
+  border:3px solid var(--turf-line);
+  color:var(--chalk-dim);
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16px;
+  letter-spacing:1px;
+  cursor:pointer;
+  transition:background .1s ease, border-color .1s ease, transform .1s ease;
+}
+.reaction-target.active{
+  background:radial-gradient(circle, #ff3b5c, #c8102e);
+  border-color:var(--gold);
+  color:#fff;
+  transform:scale(1.08);
+  box-shadow:0 0 26px rgba(200,16,46,.7);
+}
+@media (max-width:520px){
+  .tag{font-size:12px;}
+  .stat .k, .k{font-size:10.5px;}
+  .rarity-badge{font-size:10.5px;}
+  .offer-badge, .t-badge, .t-label{font-size:10px;}
+  small{font-size:11px;}
+  .pc-form, .offer-upside, .offer-downside, .offer-bonus{font-size:11.5px;}
+  .article-date, .pc-ovr-label{font-size:11.5px;}
+  .cinematic-kicker{font-size:12px;}
+  .sub{font-size:13px;}
+}
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -840,9 +1005,222 @@ const TEAMS = [
   {name:"Washington Commanders", div:"NFC Este", abbr:"WSH", c1:"#5A1414", c2:"#FFB612"},
 ];
 
+function icon(name, size, color){
+  const s = size||20, c = color||'currentColor';
+  const paths = {
+    trophy: '<path d="M6 4h12v2h3v3a4 4 0 01-4 4h-.3A6 6 0 0113 16.9V19h3v2H8v-2h3v-2.1A6 6 0 016.3 13H6a4 4 0 01-4-4V6h3V4h13zM6 6H4.5v3A2 2 0 006.4 11 8 8 0 016 8.5V6zm12 0v2.5a8 8 0 01-.4 2.5A2 2 0 0019.5 9V6H18z"/>',
+    star: '<path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8-5.1-4.7 6.9-.8z"/>',
+    crown: '<path d="M3 8l4 3 5-6 5 6 4-3-2 11H5zM5 21h14v2H5z"/>',
+    medal: '<circle cx="12" cy="14" r="6"/><path d="M9 3h6l-2 6-1 1-1-1zM9.2 9.6L6.5 4.8 4 6l3.4 5.8zM14.8 9.6l2.7-4.8L20 6l-3.4 5.8z" fill="' + '' + '"/>',
+    shield: '<path d="M12 2l8 3v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V5z"/>',
+    fire: '<path d="M12 2c1 3-3 4-3 8a3 3 0 006 0c1 0 2 1.5 2 3.5A5 5 0 0112 18a6 6 0 01-6-6c0-4 3-5 3-8 1 1 1 3 1 3s2-2 2-5z"/>',
+    heart: '<path d="M12 21s-7-4.6-9.5-9C.5 8.5 2 5 5.5 5c2 0 3.3 1.1 4 2.2C10.2 6.1 11.5 5 13.5 5 17 5 18.5 8.5 16.5 12c-2.5 4.4-9.5 9-9.5 9z"/>',
+    plane: '<path d="M2 13l19-9-6 10 6 8-19-8 0 5-2-1v-3l2-1zM4 16v3l2-1v-3z"/>',
+    handshake: '<path d="M2 10l5-4 4 2 2-1 4 3-2 2-1-1-4 4-4-3-1 1z"/>',
+    bandage: '<rect x="3" y="9" width="18" height="6" rx="3" transform="rotate(-20 12 12)"/>',
+    armor: '<path d="M12 2l7 3v6c0 5-3 8.5-7 10-4-1.5-7-5-7-10V5z" fill="none" stroke="' + c + '" stroke-width="1.6"/><path d="M12 6v13M8 8l4-2 4 2" fill="none" stroke="' + c + '" stroke-width="1.6"/>',
+    shoe: '<path d="M3 17c0-3 2-5 5-5l3-3 4 1 3 3h3v4c0 1-1 2-2 2H5c-1 0-2-1-2-2z"/>',
+    tree: '<path d="M12 2l5 6h-3l4 5h-3l4 6H5l4-6H6l4-5H7z"/><rect x="11" y="19" width="2" height="3"/>',
+    bag: '<path d="M6 8h12l1 12H5z"/><path d="M9 8V6a3 3 0 016 0v2" fill="none" stroke="' + c + '" stroke-width="1.6"/>',
+    coffee: '<path d="M4 8h13v6a5 5 0 01-5 5H9a5 5 0 01-5-5z"/><path d="M17 9h1.5a2.5 2.5 0 010 5H17" fill="none" stroke="' + c + '" stroke-width="1.6"/>',
+    checkmark: '<path d="M4 12l5 5 11-11" fill="none" stroke="' + c + '" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>',
+    box: '<rect x="4" y="4" width="16" height="16" rx="2"/>',
+  };
+  return `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="${c}" style="vertical-align:-4px;">${paths[name]||''}</svg>`;
+}
+
+function pressConferenceSvg(){
+  const t = S.team || {c1:'#28407a', c2:'#0f1d40', abbr:'NFL'};
+  const last = (typeof getLastName==='function') ? getLastName() : 'JUGADOR';
+  const uid = Math.round(Math.random()*99999);
+  return `
+  <svg viewBox="0 0 400 200" style="width:100%; height:auto; display:block; border-radius:12px;">
+    <defs>
+      <linearGradient id="pcbg-${uid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${t.c1}"/>
+        <stop offset="100%" stop-color="${t.c2}"/>
+      </linearGradient>
+      <linearGradient id="pctable-${uid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1b2c55"/>
+        <stop offset="100%" stop-color="#0a1226"/>
+      </linearGradient>
+      <radialGradient id="pcflash-${uid}">
+        <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="400" height="200" fill="url(#pcbg-${uid})"/>
+    ${Array.from({length:12},(_,i)=>{
+      const col = i%3, row = Math.floor(i/3);
+      const x = 8 + col*134 + (row%2 ? 24 : 0);
+      const y = 22 + row*33;
+      return `<text x="${x}" y="${y}" font-family="'Bebas Neue',sans-serif" font-size="10" fill="#ffffff" opacity="0.15" letter-spacing="1.2">PLATICAPATRIOT</text>`;
+    }).join('')}
+    ${Array.from({length:14},(_,i)=>{
+      const x = 10+(i*29)%390, y = 8+((i*53)%150);
+      return `<circle cx="${x}" cy="${y}" r="${5+(i%3)*3}" fill="url(#pcflash-${uid})" opacity="${0.25+(i%4)*0.12}"/>`;
+    }).join('')}
+    <ellipse cx="200" cy="108" rx="27" ry="29" fill="#1b2438"/>
+    <path d="M173 143c0-16 12-26 27-26s27 10 27 26v12h-54z" fill="${t.c1}" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+    <text x="200" y="137" text-anchor="middle" font-family="'Oswald',sans-serif" font-weight="700" font-size="9" fill="#fff">${escapeXml(last).slice(0,10)}</text>
+    <rect x="182" y="84" width="36" height="16" rx="4" fill="${t.c2}" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+    <text x="200" y="96" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="11" fill="#fff">${t.abbr}</text>
+    <rect x="0" y="150" width="400" height="50" fill="url(#pctable-${uid})"/>
+    <rect x="0" y="150" width="400" height="3" fill="var(--gold)" opacity="0.85"/>
+    <rect x="150" y="158" width="100" height="30" rx="4" fill="#0f1a33" stroke="var(--gold-dim)" stroke-width="1.5"/>
+    <text x="200" y="178" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="13" fill="var(--gold)" letter-spacing="1.5">PLATICAPATRIOT</text>
+    ${[118,140,262,284].map(x=>`
+      <line x1="${x}" y1="150" x2="${x+(x<200?6:-6)}" y2="126" stroke="#8a94a8" stroke-width="2.5" stroke-linecap="round"/>
+      <ellipse cx="${x+(x<200?6:-6)}" cy="122" rx="5" ry="7" fill="#2a3350" stroke="#8a94a8" stroke-width="1.5"/>
+    `).join('')}
+  </svg>`;
+}
+
+function gymSvg(){
+  const uid = Math.round(Math.random()*99999);
+  return `
+  <svg viewBox="0 0 400 200" style="width:100%; height:auto; display:block;">
+    <defs><linearGradient id="gy-${uid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#16203d"/><stop offset="100%" stop-color="#080d1c"/></linearGradient></defs>
+    <rect width="400" height="200" fill="url(#gy-${uid})"/>
+    ${Array.from({length:9},(_,i)=>`<rect x="${i*46}" y="0" width="3" height="150" fill="#ffffff" opacity="0.04"/>`).join('')}
+    <rect x="0" y="150" width="400" height="50" fill="#0b1020"/>
+    <rect x="0" y="150" width="400" height="3" fill="var(--gold)" opacity="0.6"/>
+    <rect x="40" y="96" width="320" height="7" rx="3.5" fill="#6d7891"/>
+    ${[62,92,308,338].map(x=>`<rect x="${x-13}" y="72" width="26" height="55" rx="5" fill="#222c46" stroke="#4a5674" stroke-width="2"/>`).join('')}
+    <circle cx="200" cy="72" r="17" fill="#1b2438"/>
+    <path d="M176 150c0-15 11-24 24-24s24 9 24 24z" fill="#c8102e" opacity="0.9"/>
+    <rect x="186" y="88" width="28" height="30" rx="6" fill="#1b2438"/>
+    <line x1="186" y1="99" x2="152" y2="99" stroke="#6d7891" stroke-width="5" stroke-linecap="round"/>
+    <line x1="214" y1="99" x2="248" y2="99" stroke="#6d7891" stroke-width="5" stroke-linecap="round"/>
+  </svg>`;
+}
+
+function nightlifeSvg(){
+  const uid = Math.round(Math.random()*99999);
+  return `
+  <svg viewBox="0 0 400 200" style="width:100%; height:auto; display:block;">
+    <defs>
+      <linearGradient id="nl-${uid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#2a1040"/><stop offset="55%" stop-color="#14103a"/><stop offset="100%" stop-color="#070a1c"/></linearGradient>
+      <radialGradient id="nlglow-${uid}"><stop offset="0%" stop-color="#ff3b8f" stop-opacity="0.75"/><stop offset="100%" stop-color="#ff3b8f" stop-opacity="0"/></radialGradient>
+    </defs>
+    <rect width="400" height="200" fill="url(#nl-${uid})"/>
+    <circle cx="90" cy="46" r="52" fill="url(#nlglow-${uid})"/>
+    <circle cx="310" cy="38" r="46" fill="url(#nlglow-${uid})" opacity="0.7"/>
+    ${Array.from({length:22},(_,i)=>{
+      const x=(i*37)%400, y=6+((i*61)%120);
+      return `<circle cx="${x}" cy="${y}" r="${1.5+(i%3)}" fill="#ffd0f0" opacity="${0.3+(i%4)*0.15}"/>`;
+    }).join('')}
+    ${[40,96,152,248,304,360].map((x,i)=>`<rect x="${x}" y="${110-(i%3)*16}" width="26" height="${46+(i%3)*16}" rx="4" fill="#0d1230" opacity="0.9"/>`).join('')}
+    <rect x="0" y="152" width="400" height="48" fill="#0a0f24"/>
+    <rect x="0" y="152" width="400" height="3" fill="#ff3b8f" opacity="0.7"/>
+    ${[120,200,280].map(x=>`
+      <path d="M${x-11} 120 L${x+11} 120 L${x+3} 136 L${x+3} 150 L${x-3} 150 L${x-3} 136 Z" fill="#e8c46a" opacity="0.92"/>
+    `).join('')}
+  </svg>`;
+}
+
+function primetimeSvg(){
+  const t = S.team || {c1:'#28407a', c2:'#0f1d40'};
+  const uid = Math.round(Math.random()*99999);
+  return `
+  <svg viewBox="0 0 400 200" style="width:100%; height:auto; display:block;">
+    <defs>
+      <linearGradient id="pt-${uid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#050813"/><stop offset="100%" stop-color="#0d1730"/></linearGradient>
+      <radialGradient id="ptl-${uid}"><stop offset="0%" stop-color="#fff9d6" stop-opacity="0.9"/><stop offset="100%" stop-color="#fff9d6" stop-opacity="0"/></radialGradient>
+      <linearGradient id="ptf-${uid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1d4b2a"/><stop offset="100%" stop-color="#0f2e1a"/></linearGradient>
+    </defs>
+    <rect width="400" height="200" fill="url(#pt-${uid})"/>
+    ${[60,200,340].map(x=>`
+      <rect x="${x-3}" y="8" width="6" height="34" fill="#3a4666"/>
+      <rect x="${x-26}" y="2" width="52" height="12" rx="3" fill="#4d5a7d"/>
+      <ellipse cx="${x}" cy="70" rx="58" ry="46" fill="url(#ptl-${uid})" opacity="0.55"/>
+    `).join('')}
+    <rect x="0" y="96" width="400" height="26" fill="#111a33"/>
+    ${Array.from({length:40},(_,i)=>`<circle cx="${6+i*10}" cy="${104+((i*7)%14)}" r="2.6" fill="#d8e0f5" opacity="${0.25+((i*3)%5)*0.12}"/>`).join('')}
+    <rect x="0" y="122" width="400" height="78" fill="url(#ptf-${uid})"/>
+    ${Array.from({length:8},(_,i)=>`<rect x="${i*50}" y="122" width="2" height="78" fill="#ffffff" opacity="0.14"/>`).join('')}
+    <rect x="0" y="122" width="400" height="2.5" fill="#ffffff" opacity="0.35"/>
+    <ellipse cx="200" cy="192" rx="24" ry="5" fill="#000" opacity="0.4"/>
+    <circle cx="200" cy="146" r="13" fill="#1b2438"/>
+    <path d="M181 190c0-13 8-22 19-22s19 9 19 22z" fill="${t.c1}" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
+  </svg>`;
+}
+
+function snowSvg(){
+  const t = S.team || {c1:'#28407a'};
+  const uid = Math.round(Math.random()*99999);
+  return `
+  <svg viewBox="0 0 400 200" style="width:100%; height:auto; display:block;">
+    <defs><linearGradient id="sn-${uid}" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2b3c5e"/><stop offset="100%" stop-color="#101b33"/></linearGradient></defs>
+    <rect width="400" height="200" fill="url(#sn-${uid})"/>
+    <rect x="0" y="128" width="400" height="72" fill="#e8eef8" opacity="0.92"/>
+    <path d="M0 128 Q 60 120 110 128 T 220 127 T 340 129 T 400 126 L400 140 L0 140 Z" fill="#ffffff" opacity="0.6"/>
+    ${Array.from({length:9},(_,i)=>`<rect x="${i*50}" y="132" width="2" height="64" fill="#9fb0cc" opacity="0.5"/>`).join('')}
+    ${Array.from({length:46},(_,i)=>{
+      const x=(i*53)%400, y=(i*37)%196, r=1.4+((i*3)%4)*0.7;
+      return `<circle cx="${x}" cy="${y}" r="${r}" fill="#ffffff" opacity="${0.45+((i*5)%4)*0.13}"/>`;
+    }).join('')}
+    <ellipse cx="200" cy="190" rx="22" ry="5" fill="#8a9bbd" opacity="0.45"/>
+    <circle cx="200" cy="140" r="13" fill="#1b2438"/>
+    <path d="M181 186c0-13 8-22 19-22s19 9 19 22z" fill="${t.c1}" stroke="rgba(255,255,255,.55)" stroke-width="2"/>
+    <path d="M186 130 h28 l-3 -7 h-22 z" fill="#ffffff" opacity="0.85"/>
+  </svg>`;
+}
+
+function commercialSvg(){
+  const uid = Math.round(Math.random()*99999);
+  return `
+  <svg viewBox="0 0 400 200" style="width:100%; height:auto; display:block;">
+    <defs>
+      <linearGradient id="cm-${uid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#1a1426"/><stop offset="100%" stop-color="#090b18"/></linearGradient>
+      <radialGradient id="cml-${uid}"><stop offset="0%" stop-color="#fff4c9" stop-opacity="0.65"/><stop offset="100%" stop-color="#fff4c9" stop-opacity="0"/></radialGradient>
+    </defs>
+    <rect width="400" height="200" fill="url(#cm-${uid})"/>
+    <ellipse cx="200" cy="112" rx="96" ry="76" fill="url(#cml-${uid})"/>
+    <rect x="0" y="152" width="400" height="48" fill="#0a0c18"/>
+    <rect x="0" y="152" width="400" height="3" fill="var(--gold)" opacity="0.7"/>
+    <circle cx="200" cy="96" r="16" fill="#1b2438"/>
+    <path d="M178 150c0-14 10-23 22-23s22 9 22 23z" fill="#c8102e" stroke="rgba(255,255,255,.35)" stroke-width="2"/>
+    <g transform="translate(46,58)">
+      <rect x="0" y="12" width="46" height="30" rx="5" fill="#222c46" stroke="#5a6788" stroke-width="2"/>
+      <path d="M46 22 L64 14 L64 42 L46 33 Z" fill="#222c46" stroke="#5a6788" stroke-width="2"/>
+      <circle cx="13" cy="7" r="7" fill="#222c46" stroke="#5a6788" stroke-width="2"/>
+      <circle cx="31" cy="7" r="7" fill="#222c46" stroke="#5a6788" stroke-width="2"/>
+      <rect x="12" y="42" width="5" height="30" fill="#3d4866"/>
+      <path d="M2 86 L14 44 L26 86 Z" fill="none" stroke="#3d4866" stroke-width="3"/>
+    </g>
+    <g transform="translate(300,54)">
+      <rect x="0" y="0" width="56" height="40" rx="4" fill="#1a2440" stroke="#5a6788" stroke-width="2"/>
+      <path d="M8 40 L8 78 M48 40 L48 78 M28 40 L28 84" stroke="#3d4866" stroke-width="3"/>
+      <circle cx="28" cy="20" r="11" fill="#fff4c9" opacity="0.75"/>
+    </g>
+    <rect x="148" y="160" width="104" height="26" rx="4" fill="#12172b" stroke="var(--gold-dim)" stroke-width="1.5"/>
+    <text x="200" y="178" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="12" fill="var(--gold)" letter-spacing="1.6">¡ACCIÓN!</text>
+  </svg>`;
+}
+
 function badgeHtml(team, size){
-  const cls = size==='lg' ? 'team-badge lg' : 'team-badge';
-  return `<div class="${cls}" style="background:linear-gradient(150deg, ${team.c1}, ${team.c2}); color:#fff;">${team.abbr}</div>`;
+  const isLg = size==='lg';
+  const w = isLg ? 64 : 44;
+  const uid = `${team.abbr}-${Math.round(Math.random()*99999)}`;
+  return `
+  <svg width="${w}" height="${w}" viewBox="0 0 100 100" class="team-shield">
+    <defs>
+      <linearGradient id="shield-${uid}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${team.c1}"/>
+        <stop offset="100%" stop-color="${team.c2}"/>
+      </linearGradient>
+    </defs>
+    <path d="M50,4 L88,16 L88,48 C88,72 72,88 50,98 C28,88 12,72 12,48 L12,16 Z"
+      fill="url(#shield-${uid})" stroke="rgba(255,255,255,.45)" stroke-width="3"/>
+    <text x="50" y="58" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="${isLg?30:22}" fill="#fff" stroke="rgba(0,0,0,.4)" stroke-width="0.6">${team.abbr}</text>
+  </svg>`;
 }
 
 function escapeXml(str){
@@ -943,8 +1321,78 @@ const PREP_ROUNDS = [
 
 // Event pool. groups: array of position groups it applies to, or 'all'
 // Each choice: label, tags (display), fx (stat deltas), feedback (narrative result shown after picking)
+function streamSvg(){
+  const t = S.team || {c1:'#28407a', c2:'#0f1d40'};
+  const uid = Math.round(Math.random()*99999);
+  const bars = Array.from({length:14}, (_,i)=>{
+    const h = 10 + ((i*37)%34);
+    return `<rect x="${30+i*8}" y="${168-h}" width="5" height="${h}" rx="2" fill="#ffffff" opacity="${0.18+((i*13)%5)*0.06}"/>`;
+  }).join('');
+  return `
+  <svg viewBox="0 0 400 200" style="width:100%; height:auto; display:block; border-radius:12px;">
+    <defs>
+      <linearGradient id="stbg-${uid}" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="${t.c1}"/><stop offset="100%" stop-color="#0a1226"/></linearGradient>
+    </defs>
+    <rect width="400" height="200" fill="url(#stbg-${uid})"/>
+    <rect x="18" y="16" width="62" height="22" rx="11" fill="#c8102e"/>
+    <circle cx="32" cy="27" r="5" fill="#fff"><animate attributeName="opacity" values="1;.2;1" dur="1.4s" repeatCount="indefinite"/></circle>
+    <text x="42" y="31" font-family="'Bebas Neue',sans-serif" font-size="13" fill="#fff" letter-spacing="1.5">EN VIVO</text>
+    ${bars}
+    <rect x="150" y="48" width="100" height="100" rx="14" fill="#0a1226" stroke="#ffffff" stroke-opacity=".25" stroke-width="2"/>
+    <rect x="186" y="62" width="28" height="46" rx="14" fill="#c8102e"/>
+    <path d="M178 94 a22 22 0 0 0 44 0" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+    <path d="M200 116 v16 M186 132 h28" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+    <g transform="translate(290,60)">
+      <rect width="92" height="26" rx="13" fill="#ffffff" fill-opacity=".14"/><text x="12" y="17" font-family="Inter,sans-serif" font-size="11" fill="#fff">💬 ¡Vamos Pats!</text>
+      <rect y="34" width="108" height="26" rx="13" fill="#ffffff" fill-opacity=".14"/><text x="12" y="51" font-family="Inter,sans-serif" font-size="11" fill="#fff">🔥 Qué temporada</text>
+      <rect y="68" width="84" height="26" rx="13" fill="#ffffff" fill-opacity=".14"/><text x="12" y="85" font-family="Inter,sans-serif" font-size="11" fill="#fff">🇲🇽 Desde MX</text>
+    </g>
+    <text x="200" y="186" text-anchor="middle" font-family="'Bebas Neue',sans-serif" font-size="13" fill="#ffffff" opacity=".8" letter-spacing="2">PLATICAPATRIOT</text>
+  </svg>`;
+}
+
 const EVENT_POOL = [
-  {groups:['all'], icon:"Offseason", text:()=>`Tu preparador físico te ofrece un plan de offseason a medida para {posLabel}. ¿Cómo lo encaras?`,
+  {groups:['all'], icon:"PlaticaPatriot · Directo", graphic:()=>streamSvg(), text:()=>`La comunidad de PlaticaPatriot te invita a un directo de análisis: miles de aficionados te harán preguntas en vivo sobre tu temporada.`,
+    choices:[
+      {label:"Contestar todo con humor y cercanía", tags:[{t:'up',s:'+Fama'},{t:'up',s:'+Química'}], fx:{fame:6,quimica:3},
+        feedback:"El directo se llenó de risas y el clip de tu respuesta más graciosa se hizo viral."},
+      {label:"Hablar de táctica y mostrar tu lectura del juego", tags:[{t:'up',s:'+IQ'},{t:'up',s:'+Nivel'}], fx:{iq:5,ovr:1,fame:2},
+        feedback:"Los aficionados quedaron impresionados con tu nivel de análisis y varios coaches lo vieron."},
+      {label:"Aprovechar para mandar un mensaje a tu rival", tags:[{t:'up',s:'+Clutch'},{t:'risk',s:'+Presión'}], fx:{clutch:3,fame:4,presion:5},
+        feedback:"Tu mensaje encendió la rivalidad y toda la comunidad esperó el siguiente partido."},
+      {label:"Pasar rápido: tienes que descansar", tags:[{t:'up',s:'+Salud'},{t:'down',s:'-Fama'}], fx:{health:4,fame:-2},
+        feedback:"Descansaste bien, aunque la comunidad se quedó con ganas de más."},
+    ]},
+  {groups:['all'], icon:"Peña de Fans", text:()=>`Un grupo de aficionados mexicanos organiza una peña para ver tus partidos y te invitan a una videollamada para saludarlos antes del domingo.`,
+    choices:[
+      {label:"Conectarte y dedicarles el próximo partido", tags:[{t:'up',s:'+Fama'},{t:'up',s:'+Clutch'}], fx:{fame:5,clutch:2,quimica:2},
+        feedback:"Verlos con las banderas te dio una motivación enorme para el domingo."},
+      {label:"Mandarles camisetas firmadas", tags:[{t:'up',s:'+Fama'},{t:'up',s:'+Legado'},{t:'info',s:'-$0.1M'}], fx:{fame:4,legacy:2,money:-0.1},
+        feedback:"Las camisetas recorrieron redes sociales y tu nombre ganó cariño en México."},
+      {label:"Dejar que tu agente coordine un saludo grabado", tags:[{t:'info',s:'Neutral'}], fx:{fame:1},
+        feedback:"Un saludo correcto y sin mucho impacto."},
+      {label:"Decir que no puedes: te enfocas en la preparación", tags:[{t:'up',s:'+Nivel'},{t:'down',s:'-Fama'}], fx:{ovr:2,fame:-2},
+        feedback:"Ganaste tiempo de estudio, pero la peña se sintió ignorada."},
+    ]},
+  {groups:['all'], icon:"Mesa de Debate", graphic:()=>pressConferenceSvg(), text:()=>`En la mesa de debate de PlaticaPatriot te preguntan: "¿Cuál ha sido la mejor dinastía de la historia de la NFL?" Todos esperan tu respuesta.`,
+    choices:[
+      {label:"Defender a los Patriots con datos y pasión", tags:[{t:'up',s:'+Fama'},{t:'up',s:'+Química'}], fx:{fame:5,quimica:3},
+        feedback:"La comunidad aplaudió tu defensa y el corte del debate fue de lo más compartido de la semana."},
+      {label:"Dar una respuesta diplomática que respete a todos", tags:[{t:'up',s:'+Química'},{t:'info',s:'Seguro'}], fx:{quimica:4,fame:1},
+        feedback:"Nadie se molestó, aunque tampoco nadie la recordó."},
+      {label:"Lanzar una opinión polémica a propósito", tags:[{t:'up',s:'+Fama'},{t:'risk',s:'+Presión'},{t:'down',s:'-Química'}], fx:{fame:8,presion:6,quimica:-4},
+        feedback:"Tu opinión incendió las redes: más fama, pero también más presión y críticas."},
+    ]},
+  {groups:['all'], icon:"Pregunta de la Audiencia", text:()=>`Un joven aficionado te pregunta en el chat de PlaticaPatriot: "¿Qué consejo le darías a alguien que quiere llegar a la NFL?" Tu respuesta puede inspirar a mucha gente.`,
+    choices:[
+      {label:"«Trabaja en silencio y sé constante»", tags:[{t:'up',s:'+Resistencia'},{t:'up',s:'+IQ'}], fx:{durability:3,iq:3},
+        feedback:"Tu consejo se compartió en cientos de cuentas de jóvenes atletas."},
+      {label:"«Rodéate de gente que te haga mejor»", tags:[{t:'up',s:'+Química'},{t:'up',s:'+Legado'}], fx:{quimica:5,legacy:2},
+        feedback:"El mensaje conectó con el vestidor y con la comunidad."},
+      {label:"«Cree en ti aunque nadie más lo haga»", tags:[{t:'up',s:'+Clutch'},{t:'up',s:'+Fama'}], fx:{clutch:3,fame:4},
+        feedback:"Tu frase se volvió lema en los gimnasios de la comunidad."},
+    ]},
+  {groups:['all'], icon:"Offseason", graphic:()=>gymSvg(), text:()=>`Tu preparador físico te ofrece un plan de offseason a medida para {posLabel}. ¿Cómo lo encaras?`,
     choices:[
       {label:"Entrenamiento intensivo, sin días libres", tags:[{t:'up',s:'+Nivel'},{t:'down',s:'-Salud'}], fx:{ovr:4,health:-6},
         feedback:"Llegas a la pretemporada afilado, pero tu cuerpo carga un desgaste que vas a notar más adelante."},
@@ -1120,7 +1568,7 @@ const EVENT_POOL = [
       {label:"Usar tu propio peso mediático para ayudarlo", tags:[{t:'up',s:'+Fama'},{t:'up',s:'+Química'}], fx:{fame:3,quimica:4},
         feedback:"Tu respaldo público le da a tu compañero una posición de negociación mucho más fuerte."},
     ]},
-  {groups:['all'], icon:"Vida Nocturna", text:()=>`Es la semana de descanso y tus compañeros arman un plan para salir de fiesta por Miami la noche antes de volver a entrenar.`,
+  {groups:['all'], icon:"Vida Nocturna", graphic:()=>nightlifeSvg(), text:()=>`Es la semana de descanso y tus compañeros arman un plan para salir de fiesta por Miami la noche antes de volver a entrenar.`,
     choices:[
       {label:"Quedarte entrenando horas extra con los receptores", tags:[{t:'up',s:'+Nivel'}], fx:{ovr:3},
         feedback:"Te quedaste entrenando mientras los demás se divertían en Miami. Tu entrenador lo notó al día siguiente."},
@@ -1186,6 +1634,125 @@ const EVENT_POOL = [
       {label:"Mantenerlo completamente en privado", tags:[{t:'up',s:'+Salud'}], fx:{health:4,presion:-3},
         feedback:"Mantener la noticia en privado te dio la paz mental que necesitabas para rendir en la cancha."},
     ]},
+  {groups:['all'], icon:"PlaticaPatriot", text:()=>`El canal de PlaticaPatriot te invita como entrevistado especial para hablar de tu temporada en vivo frente a toda la comunidad de fanáticos.`,
+    choices:[
+      {label:"Ir con un análisis táctico detallado de tu juego", tags:[{t:'up',s:'+IQ'}], fx:{iq:4,fame:2},
+        feedback:"El análisis técnico que diste en la entrevista sorprendió hasta a los conductores del programa."},
+      {label:"Ser honesto y abrirte sobre los momentos difíciles", tags:[{t:'up',s:'+Química'}], fx:{quimica:5,fame:3},
+        feedback:"Tu sinceridad en la entrevista conectó con la audiencia de una forma que no esperabas."},
+      {label:"Usar la entrevista para mandarle un mensaje a tu rival de división", tags:[{t:'up',s:'+Fama'},{t:'risk',s:'+Presión'}], fx:{fame:8,presion:5},
+        feedback:"Tus declaraciones se viralizaron de inmediato en toda la comunidad de PlaticaPatriot."},
+      {label:"Rechazar la invitación por falta de tiempo", tags:[{t:'up',s:'+Nivel'}], fx:{ovr:2,fame:-2},
+        feedback:"Preferiste invertir ese tiempo en el gimnasio en vez de en cámara."},
+    ]},
+  {groups:['all'], icon:"Clima", graphic:()=>snowSvg(), text:()=>`Una tormenta de nieve azota la ciudad justo antes de uno de los partidos más importantes del mes.`,
+    choices:[
+      {label:"Adaptar tu juego a las condiciones, apostando por el ataque terrestre", tags:[{t:'up',s:'+IQ'}], fx:{iq:4,ovr:1},
+        feedback:"Leíste las condiciones del campo mejor que nadie y ajustaste tu juego en consecuencia."},
+      {label:"Entrenar toda la semana en condiciones similares para acostumbrarte", tags:[{t:'up',s:'+Nivel'},{t:'down',s:'-Salud'}], fx:{ovr:3,health:-3},
+        feedback:"Los entrenamientos bajo la nieve te dejaron mejor preparado que al resto del equipo."},
+      {label:"Confiar en tu talento natural sin cambiar nada", tags:[{t:'risk',s:'Riesgo alto'}], fx:{clutch:3},
+        feedback:"Decidiste no darle demasiada importancia al clima, jugada tras jugada."},
+      {label:"Motivar al equipo a abrazar las condiciones extremas", tags:[{t:'up',s:'+Química'}], fx:{quimica:5},
+        feedback:"Convertiste la tormenta en una ventaja psicológica para todo el vestidor."},
+    ]},
+  {groups:['all'], icon:"Escenario", graphic:()=>primetimeSvg(), text:()=>`Tu partido de esta semana fue elegido para el Sunday Night Football, con todo el país mirando en horario estelar.`,
+    choices:[
+      {label:"Aprovechar el escenario para mostrarte ante toda la liga", tags:[{t:'up',s:'+Fama'},{t:'risk',s:'+Presión'}], fx:{fame:7,presion:5},
+        feedback:"Jugaste como si supieras que millones de personas te estaban mirando esa noche."},
+      {label:"Tratarlo como un partido más, sin darle peso extra", tags:[{t:'up',s:'+Química'}], fx:{quimica:4},
+        feedback:"Le quitaste presión al momento tratándolo como cualquier otro domingo."},
+      {label:"Prepararte mentalmente para el ambiente del horario estelar", tags:[{t:'up',s:'+Clutch'}], fx:{clutch:5},
+        feedback:"La preparación mental extra te dejó listo para el ambiente eléctrico del estadio."},
+      {label:"Usar el escenario para consolidar tu marca personal", tags:[{t:'up',s:'+Fama'},{t:'up',s:'+Legado'}], fx:{fame:6,legacy:3},
+        feedback:"El horario estelar terminó siendo el trampolín perfecto para tu marca personal."},
+    ]},
+  {groups:['all'], icon:"Rueda de Prensa", graphic:()=>pressConferenceSvg(),
+    text:()=>{
+      const qs = [
+        `Terminó el partido y te sientas frente a los micrófonos. El reportero de PlaticaPatriot toma la palabra: "¿Qué le dirías a los aficionados que dudaron de este equipo al inicio de la temporada?"`,
+        `En la rueda de prensa posterior al partido, PlaticaPatriot pregunta: "Se te vio discutiendo con el coordinador en la banca. ¿Qué pasó realmente ahí?"`,
+        `Frente a las cámaras, el micrófono de PlaticaPatriot llega hasta ti: "Tus números bajaron respecto al año pasado. ¿Es preocupación o es solo una racha?"`,
+        `Post partido, PlaticaPatriot lanza la pregunta del día: "¿Te consideras hoy el mejor de la liga en tu posición?"`,
+      ];
+      return qs[Math.floor(Math.random()*qs.length)];
+    },
+    choices:[
+      {label:"Responder con humildad y darle el crédito al equipo", tags:[{t:'up',s:'+Química'},{t:'up',s:'+Confianza'}], fx:{quimica:6,coachTrust:5,fame:-1},
+        feedback:"Tu respuesta humilde le dio el crédito al grupo. El vestidor y el cuerpo técnico lo agradecieron."},
+      {label:"Responder con confianza total en ti mismo", tags:[{t:'up',s:'+Fama'},{t:'risk',s:'+Presión'}], fx:{fame:8,presion:6,clutch:2},
+        feedback:"Tu declaración segura se volvió el titular del día en todos los programas deportivos."},
+      {label:"Dar una respuesta técnica y desmenuzar la jugada", tags:[{t:'up',s:'+IQ'}], fx:{iq:5,fame:2},
+        feedback:"Desarmaste la pregunta con un análisis tan detallado que hasta los analistas tomaron nota."},
+      {label:"Esquivar la pregunta con evasivas", tags:[{t:'down',s:'-Fama'},{t:'down',s:'-Química'}], fx:{fame:-5,quimica:-3,presion:-2},
+        feedback:"Tu evasiva no cayó bien: la prensa lo interpretó como que algo estabas ocultando."},
+    ]},
+  {groups:['all'], icon:"Comercial", graphic:()=>commercialSvg(), text:()=>`Una agencia te ofrece protagonizar un comercial que se grabará en plena semana de partido. El guion todavía no está cerrado y no sabes bien qué te van a pedir hacer.`,
+    choices:[
+      {label:"Rechazar la oferta y enfocarte en el partido", tags:[{t:'up',s:'+Nivel'}], fx:{ovr:2,fame:-2},
+        feedback:"Dijiste que no. Sin distracciones, llegaste al domingo con la cabeza completamente en el juego."},
+      {label:"Aceptar una grabación corta de un solo día", tags:[{t:'up',s:'+Fama'},{t:'info',s:'Resultado incierto'}], fx:{fame:5,money:2}, gamble:'light',
+        feedback:"Aceptaste la grabación de un día."},
+      {label:"Aceptar el rodaje completo de toda la semana", tags:[{t:'up',s:'+Fama'},{t:'risk',s:'Resultado incierto'}], fx:{fame:10,money:6}, gamble:'heavy',
+        feedback:"Te comprometiste con el rodaje completo de la semana."},
+      {label:"Aceptar solo si te dejan improvisar a tu manera", tags:[{t:'up',s:'+Fama'},{t:'risk',s:'Resultado incierto'}], fx:{fame:7,money:3}, gamble:'wild',
+        feedback:"Negociaste libertad creativa total sobre el guion."},
+    ]},
+  {groups:['all'], icon:"Conflicto Interno", text:()=>`Dos compañeros llegan a los golpes en pleno entrenamiento y todo el equipo se queda mirando. Alguien tiene que intervenir.`,
+    choices:[
+      {label:"Meterte en medio y separarlos tú mismo", tags:[{t:'up',s:'+Química'},{t:'up',s:'+Confianza'}], fx:{quimica:7,coachTrust:6,health:-2},
+        feedback:"Te metiste en medio y cortaste la pelea. El cuerpo técnico vio quién manda de verdad en ese vestidor."},
+      {label:"Llamar al cuerpo técnico y dejar que ellos lo manejen", tags:[{t:'info',s:'Neutral'}], fx:{coachTrust:2},
+        feedback:"Avisaste a los entrenadores y dejaste que ellos resolvieran el asunto."},
+      {label:"Hablar con cada uno por separado después de la práctica", tags:[{t:'up',s:'+Química'},{t:'up',s:'+IQ'}], fx:{quimica:6,iq:3},
+        feedback:"Tu mediación privada arregló el problema de raíz, sin que trascendiera a la prensa."},
+      {label:"Hacerte a un lado, no es tu problema", tags:[{t:'down',s:'-Química'}], fx:{quimica:-6},
+        feedback:"Te hiciste a un lado. El vestidor notó que cuando hubo fuego, no diste la cara."},
+    ]},
+  {groups:['all'], icon:"Año de Contrato", text:()=>`Entras a tu último año de contrato y cada jugada tuya se analiza con lupa: la prensa dice que estás jugando por tu próximo cheque.`,
+    choices:[
+      {label:"Ignorar el ruido y jugar como siempre", tags:[{t:'up',s:'+Clutch'},{t:'down',s:'-Presión'}], fx:{clutch:5,presion:-5},
+        feedback:"Bloqueaste el ruido externo por completo y jugaste con la misma calma de siempre."},
+      {label:"Forzar jugadas espectaculares para inflar tus números", tags:[{t:'up',s:'+Fama'},{t:'down',s:'-Química'}], fx:{fame:8,quimica:-6,ovr:1},
+        feedback:"Tus números subieron, pero el vestidor notó que empezaste a jugar para la estadística."},
+      {label:"Hablar con la directiva para calmar las cosas", tags:[{t:'up',s:'+Confianza'}], fx:{coachTrust:6,presion:-3},
+        feedback:"La charla con la gerencia bajó la tensión y te devolvió la tranquilidad."},
+      {label:"Usar la presión como combustible en cada entrenamiento", tags:[{t:'up',s:'+Nivel'},{t:'down',s:'-Salud'}], fx:{ovr:4,health:-4},
+        feedback:"Convertiste la presión del año de contrato en horas extra de trabajo."},
+    ]},
+  {groups:['all'], icon:"Gala Benéfica", text:()=>`Te invitan a una gala benéfica de alto perfil llena de dueños de franquicias, patrocinadores y leyendas retiradas de la liga.`,
+    choices:[
+      {label:"Hacer contactos toda la noche con dueños y patrocinadores", tags:[{t:'up',s:'+Fama'},{t:'up',s:'+Dinero'}], fx:{fame:6,money:3},
+        feedback:"Saliste de la gala con tres números nuevos en el teléfono y una propuesta de patrocinio."},
+      {label:"Donar una parte importante de tu salario a la causa", tags:[{t:'up',s:'+Legado'},{t:'down',s:'-Dinero'}], fx:{legacy:8,fame:5,money:-4},
+        feedback:"Tu donación fue la más grande de la noche y la nota le dio la vuelta al país."},
+      {label:"Buscar a las leyendas retiradas y pedirles consejo", tags:[{t:'up',s:'+IQ'},{t:'up',s:'+Legado'}], fx:{iq:5,legacy:3},
+        feedback:"Pasaste la noche escuchando a quienes ya recorrieron el camino que tú estás empezando."},
+      {label:"Aparecer un rato corto y volver a casa a descansar", tags:[{t:'up',s:'+Salud'}], fx:{health:4,fame:-2},
+        feedback:"Cumpliste con la aparición y te fuiste temprano a dormir."},
+    ]},
+  {groups:['all'], icon:"Novatos", text:()=>`Llega la clase de novatos y el veterano del vestidor te pregunta cómo quieres manejar su bienvenida al equipo.`,
+    choices:[
+      {label:"Una bienvenida divertida pero sin humillaciones", tags:[{t:'up',s:'+Química'}], fx:{quimica:6,fame:2},
+        feedback:"La bienvenida fue divertida y sana. Los novatos se integraron al grupo de inmediato."},
+      {label:"Ponerlos a trabajar duro desde el primer día", tags:[{t:'up',s:'+Confianza'},{t:'down',s:'-Química'}], fx:{coachTrust:5,quimica:-2},
+        feedback:"Los pusiste a trabajar sin contemplaciones. El cuerpo técnico aprobó el estándar que marcaste."},
+      {label:"Tomar a uno bajo tu ala personalmente", tags:[{t:'up',s:'+Legado'},{t:'up',s:'+Química'}], fx:{legacy:5,quimica:4},
+        feedback:"Adoptaste a un novato como tu proyecto personal. Años después él seguirá contando esa historia."},
+      {label:"No involucrarte, que se arreglen solos", tags:[{t:'info',s:'Neutral'}], fx:{ovr:1},
+        feedback:"No te involucraste y usaste ese tiempo en tu propia preparación."},
+    ]},
+  {groups:['all'], icon:"Rumor de Cambio", text:()=>`Un reportero con buenas fuentes publica que tu franquicia te está ofreciendo en conversaciones de cambio con otros equipos.`,
+    choices:[
+      {label:"Exigirle una explicación directa a la gerencia", tags:[{t:'up',s:'+Confianza'},{t:'risk',s:'+Presión'}], fx:{coachTrust:5,presion:5},
+        feedback:"Fuiste directo a la oficina a pedir explicaciones. Te aseguraron que el rumor era falso."},
+      {label:"Responder jugando el mejor fútbol de tu vida", tags:[{t:'up',s:'+Nivel'},{t:'up',s:'+Clutch'}], fx:{ovr:4,clutch:4,presion:3},
+        feedback:"Tu respuesta fue silenciosa y demoledora: el mejor tramo de tu temporada empezó esa semana."},
+      {label:"Pedirle a tu agente que gestione una salida digna", tags:[{t:'up',s:'+Fama'},{t:'down',s:'-Química'}], fx:{fame:5,quimica:-6},
+        feedback:"Tu agente empezó a mover fichas. El vestidor sintió que ya tenías un pie afuera."},
+      {label:"Ignorar el rumor por completo", tags:[{t:'up',s:'+Química'},{t:'down',s:'-Presión'}], fx:{quimica:3,presion:-4},
+        feedback:"No le diste ni un segundo de atención al rumor, y la historia se apagó sola."},
+    ]},
 ];
 
 /* ============ STATE ============ */
@@ -1220,6 +1787,7 @@ function newGame(){
     screen:'menu',
     difficulty: lastDifficulty,
     isDaily:false,
+    challenge:null,
     dailySeedLabel:null,
     name:'',
     posCode:null,
@@ -1229,7 +1797,7 @@ function newGame(){
     collegeIdx:null,
     prepStep:0,
     combineStep:0,
-    combineScores:{dash:0,bench:0,agility:0},
+    combineScores:{dash:0,bench:0,agility:0,extra:0},
     combineTrainingBonus:{dash:0,bench:0,agility:0},
     trainingFocus:null,
     combineScore:0,
@@ -1240,6 +1808,9 @@ function newGame(){
     prepHealth:0,
     draft:null,
     draftPickNumber:0,
+    draftClassRivals:[],
+    bigBoard:[],
+    ovrHistory:[],
     year:0,
     age:16,
     team:null,
@@ -1268,6 +1839,7 @@ function newGame(){
     agentStrategy:null,
     teamQuality:0,
     teamChangesCount:0,
+    contractRenewals:0,
     pendingRenewalSalary:0,
     pendingRenewalBonus:0,
     coachTrust:60,
@@ -1294,6 +1866,72 @@ function newGame(){
 }
 
 function pos(){ return POSITIONS.find(p=>p.code===S.posCode); }
+
+let _audioCtx = null;
+const SOUND_KEY = 'plp_goat_sound_v1';
+function getSoundMode(){
+  try{ return localStorage.getItem(SOUND_KEY) || 'sfx'; }catch(e){ return 'sfx'; }
+}
+function setSoundMode(m){
+  try{ localStorage.setItem(SOUND_KEY, m); }catch(e){}
+  window.__soundMode = m;
+}
+function soundMode(){ return window.__soundMode || getSoundMode(); }
+function soundGlyph(){ const m = soundMode(); return m==='all' ? '🎵' : (m==='sfx' ? '🔊' : '🔇'); }
+function soundTitle(){ const m = soundMode(); return m==='all' ? 'Música y efectos' : (m==='sfx' ? 'Solo efectos' : 'Silencio'); }
+function playTone(freq, duration, type, delay, volume, isMusic){
+  if(soundMode()==='off') return;
+  if(isMusic && soundMode()!=='all') return;
+  try{
+    if(!_audioCtx) _audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const ctx = _audioCtx;
+    if(ctx.state === 'suspended') ctx.resume();
+    const startAt = ctx.currentTime + (delay||0);
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = type||'sine';
+    osc.frequency.value = freq;
+    if(isMusic){
+      gain.gain.setValueAtTime(0.0001, startAt);
+      gain.gain.exponentialRampToValueAtTime(volume||0.03, startAt+Math.min(1.2, duration*0.3));
+      gain.gain.exponentialRampToValueAtTime(0.0001, startAt+duration);
+    } else {
+      gain.gain.setValueAtTime(volume||0.12, startAt);
+      gain.gain.exponentialRampToValueAtTime(0.001, startAt+duration);
+    }
+    osc.connect(gain); gain.connect(ctx.destination);
+    osc.start(startAt); osc.stop(startAt+duration);
+  }catch(e){}
+}
+let _musicTimer = null, _musicStep = 0;
+const MUSIC_CHORDS = [[110,220,261.6,329.6],[87.3,174.6,220,261.6],[130.8,261.6,329.6,392],[98,196,246.9,293.7]];
+function musicTick(){
+  const ch = MUSIC_CHORDS[_musicStep % MUSIC_CHORDS.length];
+  ch.forEach((f,i)=> playTone(f, 4.6, i===0?'sine':'triangle', 0, i===0?0.05:0.022, true));
+  [2,3,1,3].forEach((idx,i)=> playTone(ch[idx]*2, 0.9, 'sine', 0.8+i*0.9, 0.018, true));
+  _musicStep++;
+}
+function startMusic(){
+  if(_musicTimer || soundMode()!=='all') return;
+  musicTick();
+  _musicTimer = setInterval(musicTick, 4000);
+}
+function stopMusic(){
+  if(_musicTimer){ clearInterval(_musicTimer); _musicTimer = null; }
+}
+function playCelebrationSound(){
+  playTone(523,0.16,'sine',0);
+  playTone(659,0.16,'sine',0.14);
+  playTone(784,0.32,'sine',0.28);
+}
+function playAchievementSound(){
+  playTone(660,0.12,'sine',0);
+  playTone(880,0.22,'sine',0.1);
+}
+function playInjurySound(){
+  playTone(180,0.35,'sawtooth',0,0.1);
+  playTone(120,0.4,'sawtooth',0.15,0.09);
+}
 
 const DIFFICULTY_PRESETS = {
   novato: {label:'Novato', effectMult:1.3, injuryMult:0.65, awardsMult:1.35, hofMult:0.75, desc:'Para disfrutar la historia sin sufrir tanto.'},
@@ -1339,20 +1977,58 @@ function siteHeader(){
     <div class="site-header">
       <img src="${LOGO_DATA_URI}" alt="PlaticaPatriot">
       <div class="brand">PLATICAPATRIOT<small>El G.O.A.T. — Simulador de Carrera</small></div>
-      <a href="https://www.paypal.com/ncp/payment/JWNYCGQ3SMW7J" target="_blank" rel="noopener" class="header-donate-btn" title="Apoyar el proyecto">☕</a>
+      <button class="header-donate-btn" id="soundBtn" title="${soundTitle()}" aria-label="Sonido: ${soundTitle()}" style="font-family:inherit; color:var(--chalk); padding:0;">${soundGlyph()}</button>
+      <a href="https://www.paypal.com/ncp/payment/JWNYCGQ3SMW7J" target="_blank" rel="noopener" class="header-donate-btn" title="Apoyar el proyecto">${icon('coffee',18,'var(--gold)')}</a>
     </div>
   `;
 }
 
+function stageKey(){
+  if(!S || S.year < 1) return '';
+  if(S.rings>=3 || S.legacy>=150) return 'leyenda';
+  if(S.rings>=1) return 'consagrado';
+  if(S.allPro>=1 || S.proBowls>=3) return 'figura';
+  return '';
+}
+function applyStageTheme(){
+  try{ document.body.dataset.stage = stageKey(); }catch(e){}
+}
+
 function el(html){
   const app = document.getElementById('app');
+  app.classList.remove('screen-enter');
+  void app.offsetWidth;
   app.innerHTML = siteHeader() + html;
+  app.classList.add('screen-enter');
   const shopBtn = document.getElementById('shopBtn');
   if(shopBtn){
     shopBtn.addEventListener('click', ()=>{
       S.returnScreen = S.screen;
       S.screen = 'shop';
       render();
+    });
+  }
+  const soundBtn = document.getElementById('soundBtn');
+  if(soundBtn){
+    soundBtn.addEventListener('click', ()=>{
+      const order = ['sfx','all','off'];
+      const next = order[(order.indexOf(soundMode())+1) % order.length];
+      setSoundMode(next);
+      stopMusic();
+      if(next==='all') startMusic();
+      soundBtn.textContent = soundGlyph();
+      soundBtn.title = soundTitle();
+      soundBtn.setAttribute('aria-label', 'Sonido: '+soundTitle());
+      playTone(660,0.08,'triangle',0,0.06);
+    });
+  }
+  applyStageTheme();
+  const helpBtn = document.getElementById('statsHelpBtn');
+  if(helpBtn){
+    helpBtn.addEventListener('click', ()=>{
+      markStatsHelpSeen();
+      const h = document.getElementById('statsHelp');
+      if(h) h.remove();
     });
   }
   const storeBtn = document.getElementById('storeBtn');
@@ -1378,9 +2054,9 @@ function fieldTracker(){
 }
 
 function stageInfo(){
-  if(S.rings>=1) return {label:"CONSAGRADO", tagline:"Ya eres campeón. Ahora defendé el legado."};
+  if(S.rings>=1) return {label:"CONSAGRADO", tagline:"Ya eres campeón. Ahora defiende el legado."};
   if(S.allPro>=1 || S.proBowls>=3) return {label:"FIGURA DE LA LIGA", tagline:"Dejaste de ser una promesa. Ahora eres un problema para el rival."};
-  if(S.seasonsPlayed < 4) return {label:"A PRUEBA", tagline:"El Draft no consagra a nadie. Ganate la titularidad."};
+  if(S.seasonsPlayed < 4) return {label:"A PRUEBA", tagline:"El Draft no consagra a nadie. Gánate la titularidad."};
   return {label:"VETERANO RESPETADO", tagline:"El vestidor ya sabe lo que vales. Falta la estatua."};
 }
 
@@ -1389,6 +2065,32 @@ function formIndicator(){
   if(diff > 1) return {arrow:'↑', label:'EN ALZA', cls:'up'};
   if(diff < -1) return {arrow:'↓', label:'EN BAJA', cls:'down'};
   return {arrow:'→', label:'ESTABLE', cls:''};
+}
+
+const STATS_HELP_KEY = 'plp_goat_stats_help_v1';
+function statsHelpSeen(){
+  if(window.__statsHelpSeen) return true;
+  try{ return localStorage.getItem(STATS_HELP_KEY) === '1'; }catch(e){ return false; }
+}
+function markStatsHelpSeen(){
+  window.__statsHelpSeen = true;
+  try{ localStorage.setItem(STATS_HELP_KEY, '1'); }catch(e){}
+}
+function statsHelpHtml(){
+  if(statsHelpSeen()) return '';
+  return `
+    <div class="stats-help" id="statsHelp">
+      <div class="cinematic-kicker" style="margin-bottom:6px;">Guía rápida de tus stats</div>
+      <ul>
+        <li><b>IQ Táctico</b>: lees mejor las jugadas; mejora tu nivel y tus decisiones clave.</li>
+        <li><b>Clutch</b>: qué tan bien rindes en playoffs y momentos de presión.</li>
+        <li><b>Resistencia</b>: baja el riesgo y el costo de las lesiones.</li>
+        <li><b>Química</b>: relación con el vestidor y el coach; afecta contratos y rendimiento.</li>
+        <li><b>Presión</b>: si sube demasiado, empiezas a fallar. Mantenla bajo control.</li>
+        <li><b>Legado</b>: tu peso histórico rumbo al Salón de la Fama.</li>
+      </ul>
+      <button class="btn secondary" id="statsHelpBtn" style="margin-top:8px;">Entendido</button>
+    </div>`;
 }
 
 function playerCardHtml(){
@@ -1432,11 +2134,12 @@ function playerCardHtml(){
       <div class="stat"><div class="v">${Math.round(S.durability)}</div><div class="k">Resistencia</div></div>
       <div class="stat"><div class="v">${S.skillPoints}</div><div class="k">Puntos Hab.</div></div>
     </div>
+    ${statsHelpHtml()}
     <div class="money-line">
       <span class="money-amount">$${S.money}M USD</span>
       <div style="display:flex; gap:6px;">
-        <button class="shop-btn" id="shopBtn">🌳 Habilidades</button>
-        <button class="shop-btn" id="storeBtn">🛍️ Tienda</button>
+        <button class="shop-btn" id="shopBtn">${icon('tree',14,'currentColor')} Habilidades</button>
+        <button class="shop-btn" id="storeBtn">${icon('bag',14,'currentColor')} Tienda</button>
       </div>
     </div>
     <div class="stage-tag">
@@ -1453,14 +2156,15 @@ function playerCardHtml(){
 }
 
 function render(){
+  if(['retireprompt','retirementceremony','postcareer','end','hofinduction'].includes(S.screen)) clearSave();
   if(S.screen==='menu') return renderMenu();
   if(S.screen==='history') return renderHistory();
   if(S.screen==='intro') return renderIntro();
   if(S.screen==='highschool') return renderArchetype();
-  if(S.screen==='collegereveal') return renderCollege();
   if(S.screen==='prep') return renderPrep();
   if(S.screen==='combine') return renderCombine();
   if(S.screen==='combinesummary') return renderCombineSummary();
+  if(S.screen==='bigboard') return renderBigBoard();
   if(S.screen==='draftcard') return renderDraftCard();
   if(S.screen==='draftresult') return renderDraftResult();
   if(S.screen==='event') return renderEvent();
@@ -1480,6 +2184,32 @@ function render(){
   if(S.screen==='hofinduction') return renderHofInduction();
 }
 
+const CHALLENGES = [
+  {key:'injured', name:'Arrancas Lesionado', desc:'Llegas al Draft con el cuerpo golpeado: menos Salud y Resistencia, pero más hambre.'},
+  {key:'pressure', name:'Presión Máxima', desc:'Los ojos de todos están sobre ti desde el día uno: Presión alta, pero más Clutch.'},
+  {key:'undrafted', name:'Nadie Te Eligió', desc:'Entras como agente libre no drafteado, con un crecimiento más rápido para demostrar que se equivocaron.'},
+  {key:'nostore', name:'Sin Lujos', desc:'La tienda está cerrada toda la carrera: todo lo que logres será por tu juego y tus decisiones.'},
+  {key:'superstar', name:'El Elegido', desc:'Entras con nivel y fama altos, pero con Presión y Química en juego desde el principio.'},
+];
+function currentWeekInfo(){
+  const d = new Date();
+  const start = new Date(d.getFullYear(),0,1);
+  const week = Math.floor((d - start)/(7*24*3600*1000)) + 1;
+  return {label:`${d.getFullYear()}-S${week}`, challenge: CHALLENGES[week % CHALLENGES.length]};
+}
+function applyChallengeToStart(){
+  const k = S.challenge;
+  if(k === 'injured'){ S.health = clamp(S.health-25,0,100); S.durability = clamp(S.durability-10,0,100); }
+  else if(k === 'pressure'){ S.presion = clamp(S.presion+35,0,100); S.clutch = clamp(S.clutch+10,0,100); }
+  else if(k === 'undrafted'){ S.growthMultiplier = Math.max(S.growthMultiplier||1, 1.3); }
+  else if(k === 'superstar'){ S.ovr = clamp(S.ovr+6,30,99); S.fame = clamp(S.fame+25,0,100); S.presion = clamp(S.presion+25,0,100); S.quimica = clamp(S.quimica-15,0,100); }
+}
+function challengeBannerHtml(){
+  if(!S.challenge) return '';
+  const c = CHALLENGES.find(x=>x.key===S.challenge);
+  return `<div class="goal-card"><div class="cinematic-kicker" style="margin-bottom:4px;">Reto semanal · ${S.dailySeedLabel}</div><div class="goal-text">🔥 ${c.name}</div><div class="sub" style="margin-top:4px;">${c.desc}</div></div>`;
+}
+
 function renderMenu(){
   const diffCards = Object.keys(DIFFICULTY_PRESETS).map(k=>{
     const d = DIFFICULTY_PRESETS[k];
@@ -1496,9 +2226,12 @@ function renderMenu(){
     <div class="card">
       <h2 class="section">Dificultad</h2>
       <div class="option-grid">${diffCards}</div>
-      <button class="btn" id="newCareerBtn" style="width:100%; margin-top:6px;">🏈 Nueva Carrera</button>
+      ${(()=>{const sv=loadSave(); return sv ? `<button class="btn" id="resumeBtn" style="width:100%; margin-top:6px;">▶ Continuar: ${sv.state.name} (Año ${sv.state.year})</button>` : '';})()}
+      <button class="btn ${loadSave()?'secondary':''}" id="newCareerBtn" style="width:100%; margin-top:${loadSave()?'10':'6'}px;">🏈 Nueva Carrera</button>
       <button class="btn secondary" id="dailyBtn" style="width:100%; margin-top:10px;">📅 Carrera del Día</button>
+      <button class="btn secondary" id="weeklyBtn" style="width:100%; margin-top:10px;">🔥 Reto Semanal: ${currentWeekInfo().challenge.name}</button>
       <button class="btn secondary" id="historyBtn" style="width:100%; margin-top:10px;">🏆 Mi Salón de la Fama</button>
+      ${badgesHtml()}
       ${best ? `<p class="sub" style="text-align:center; margin-top:14px;">Tu mejor carrera: <b style="color:var(--chalk);">${best.name}</b> — ${best.tier} (${best.score} pts)</p>` : ''}
     </div>
     <p class="sub" style="text-align:center; opacity:.7; margin-top:4px;">Simulador no oficial hecho por fans. No está afiliado a la NFL ni a ninguna de sus franquicias.</p>
@@ -1506,9 +2239,12 @@ function renderMenu(){
   document.querySelectorAll('[data-diff]').forEach(b=>{
     b.addEventListener('click', ()=>{ S.difficulty = b.dataset.diff; lastDifficulty = b.dataset.diff; render(); });
   });
+  const resumeBtn = document.getElementById('resumeBtn');
+  if(resumeBtn) resumeBtn.addEventListener('click', resumeCareer);
   document.getElementById('newCareerBtn').addEventListener('click', ()=>{
     Math.random = _nativeRandom;
     S.isDaily = false;
+    S.challenge = null;
     S.screen = 'intro';
     render();
   });
@@ -1516,7 +2252,18 @@ function renderMenu(){
     const today = new Date().toISOString().slice(0,10);
     Math.random = mulberry32(seedFromString('plp-'+today));
     S.isDaily = true;
+    S.challenge = null;
     S.dailySeedLabel = today;
+    S.difficulty = 'veterano';
+    S.screen = 'intro';
+    render();
+  });
+  document.getElementById('weeklyBtn').addEventListener('click', ()=>{
+    const wk = currentWeekInfo();
+    Math.random = mulberry32(seedFromString('plp-week-'+wk.label));
+    S.isDaily = true;
+    S.dailySeedLabel = wk.label;
+    S.challenge = wk.challenge.key;
     S.difficulty = 'veterano';
     S.screen = 'intro';
     render();
@@ -1529,14 +2276,28 @@ function renderMenu(){
 
 function renderHistory(){
   const hist = loadHistory();
-  const rows = hist.length ? hist.map(h=>`
-    <div class="bullet"><span class="b-icon">🏈</span><span><b>${h.name}</b> · ${h.position} #${h.number} · ${h.team} — <b style="color:var(--gold);">${h.tier}</b> (${h.score} pts, ${h.seasons} temporadas, ${h.rings} anillo${h.rings===1?'':'s'})</span></div>
-  `).join('') : `<p class="sub">Todavía no completaste ninguna carrera.</p>`;
+  const cards = hist.length ? hist.map(h=>{
+    const teamObj = { abbr: h.teamAbbr||'???', c1: h.teamC1||'#28407a', c2: h.teamC2||'#0f1d40' };
+    return `
+    <div class="history-card">
+      ${badgeHtml(teamObj,'lg')}
+      <div class="history-card-info">
+        <div class="history-card-name">${h.name} <span class="sub">#${h.number}</span></div>
+        <div class="sub">${h.position} · ${h.team}</div>
+        <div class="history-card-tier">${h.tier}</div>
+        <div class="meta-row" style="margin:6px 0 0;">
+          <span class="chip">${h.score} pts</span>
+          <span class="chip">${h.seasons} temp.</span>
+          <span class="chip">${h.rings} 🏆</span>
+        </div>
+      </div>
+    </div>`;
+  }).join('') : `<p class="sub">Todavía no completaste ninguna carrera.</p>`;
   el(`
     <div class="eyebrow">Tu Legado</div>
     <h1 class="display">Salón de la Fama Personal</h1>
     <div class="card">
-      <div class="bullet-list">${rows}</div>
+      <div class="history-gallery">${cards}</div>
       <button class="btn" id="backMenuBtn" style="width:100%; margin-top:16px;">← Volver al Menú</button>
     </div>
   `);
@@ -1556,6 +2317,7 @@ function renderIntro(){
     <div class="eyebrow">Simulador de Carrera · ¿Llegas a la estatua?</div>
     <h1 class="display">EL <span>G.O.A.T.</span></h1>
     <p class="lead">Todo arranca a los 16, siendo la máxima figura de tu preparatoria. Elige tu posición, tu número y tu nombre: cada temporada vas a tomar decisiones que afectan tu nivel, salud, fama, química de equipo y presión mediática — y van a construir, o destruir, tu legado.</p>
+    ${challengeBannerHtml()}
     <div class="card">
       <div class="name-number-row">
         <div style="flex:1;">
@@ -1632,31 +2394,24 @@ function renderArchetype(){
     b.addEventListener('click', ()=>{
       S.origin = ORIGINS[parseInt(b.dataset.idx)];
       S.collegeIdx = Math.floor(Math.random()*COLLEGES.length);
-      S.screen = 'collegereveal';
+      S.screen = 'prep';
+      S.prepStep = 0;
       render();
     });
   });
 }
 
-function renderCollege(){
+function collegeBannerHtml(){
   const college = COLLEGES[S.collegeIdx];
-  el(`
-    <div class="eyebrow">El Destino Decide</div>
-    <h1 class="display">Tu Camino</h1>
-    <div class="card">
-      <p class="lead">La suerte ya eligió por ti: eres ${S.origin.name} ${college.tag}. Ahora toca ganarte un lugar en el Draft.</p>
-      <div class="meta-row">
+  return `
+    <div class="college-banner">
+      <div class="cinematic-kicker" style="margin-bottom:6px;">El Destino Decide</div>
+      <p class="sub" style="margin:0; color:var(--chalk);">La suerte ya eligió por ti: eres <b>${S.origin.name}</b> ${college.tag}.</p>
+      <div class="meta-row" style="margin:8px 0 0;">
         <span class="chip">Universidad <b>${college.label}</b></span>
         <span class="chip">Categoría <b>${college.tier}</b></span>
       </div>
-      <button class="btn" id="continueBtn">Empezar la preparación →</button>
-    </div>
-  `);
-  document.getElementById('continueBtn').addEventListener('click', ()=>{
-    S.screen = 'prep';
-    S.prepStep = 0;
-    render();
-  });
+    </div>`;
 }
 
 function renderPrep(){
@@ -1670,6 +2425,7 @@ function renderPrep(){
   el(`
     <div class="eyebrow">Camino al Draft — Paso ${S.prepStep+1} de ${PREP_ROUNDS.length}</div>
     <h1 class="display">${round.title}</h1>
+    ${S.prepStep===0 ? collegeBannerHtml() : ''}
     <p class="lead">${round.text}</p>
     <div class="card"><div class="choices">${opts}</div></div>
   `);
@@ -1707,71 +2463,52 @@ function combineFlavor(score){
   return "Un traspié que los ojeadores no van a olvidar tan fácil.";
 }
 
-function renderDrillResultScreen(label, score, nextFn){
-  el(`
-    ${fieldTracker()}
-    <div class="eyebrow">NFL Combine</div>
-    <h1 class="display">${label}</h1>
-    <div class="card">
-      <div class="statbar" style="grid-template-columns:1fr;">
-        <div class="stat good"><div class="v">${score}</div><div class="k">Puntaje</div></div>
+function flashDrillResult(score, nextFn){
+  const stage = document.getElementById('drillStage');
+  if(stage){
+    stage.innerHTML = `
+      <div style="text-align:center; padding:14px 0;">
+        <div class="text-3d" style="font-family:'Anton',sans-serif; font-size:46px; color:var(--gold);">${score}</div>
+        <div class="sub" style="margin-top:6px;">${combineFlavor(score)}</div>
       </div>
-      <p class="lead">${combineFlavor(score)}</p>
-      <button class="btn" id="nextDrillBtn" style="width:100%;">Continuar →</button>
-    </div>
-  `);
-  document.getElementById('nextDrillBtn').addEventListener('click', nextFn);
+    `;
+  }
+  setTimeout(nextFn, 1000);
 }
 
 const COMBINE_DRILL_INFO = {
-  dash: {title:'40 Yardas — Prueba de Velocidad', icon:'⚡',
-    desc:'Una barra se va a mover sola de un lado a otro sobre la pista. Toca "¡DETENTE!" justo cuando el marcador esté dentro de la zona verde: cuanto más cerca del centro, mejor tu marca de velocidad.'},
-  bench: {title:'Press de Banca — Prueba de Fuerza', icon:'💪',
-    desc:'Vas a tener 5 segundos para hacer clic en "¡EMPUJA!" tantas veces como puedas. Cada clic cuenta como una repetición. Cuantas más repeticiones completes, mejor tu puntaje de fuerza.'},
-  agility: {title:'Drill de Agilidad — 3 Conos', icon:'🎯',
-    desc:'Tres conos se van a iluminar uno por uno en un orden aleatorio. Toca cada cono apenas se ilumine, en el orden correcto y lo más rápido posible. Tu tiempo total define el puntaje de agilidad.'},
+  dash: {title:'40 Yardas — Prueba de Velocidad',
+    desc:'Toca "¡DETENTE!" justo cuando el marcador esté dentro de la zona verde: cuanto más cerca del centro, mejor tu marca.'},
+  bench: {title:'Press de Banca — Prueba de Fuerza',
+    desc:'Tienes 5 segundos para hacer clic en "¡EMPUJA!" tantas veces como puedas. Cada clic es una repetición.'},
+  agility: {title:'Drill de Agilidad — 3 Conos',
+    desc:'Toca cada cono apenas se ilumine, en el orden correcto y lo más rápido posible.'},
 };
 
-function renderCombineIntro(key){
-  const info = COMBINE_DRILL_INFO[key];
-  const bonus = S.combineTrainingBonus[key]||0;
-  el(`
-    ${fieldTracker()}
-    <div class="eyebrow">NFL Combine — Prueba ${S.combineStep+1} de 3</div>
-    <h1 class="display">${info.title}</h1>
-    <div class="card" style="text-align:center;">
-      <div style="font-size:56px; margin-bottom:10px;">${info.icon}</div>
-      <p class="lead">${info.desc}</p>
-      ${bonus ? `<div class="chip" style="margin-bottom:10px;">Bono de tu preparación: <b style="color:var(--gold);">+${bonus}</b></div>` : ''}
-      <button class="btn" id="startDrillBtn" style="width:100%;">Comenzar Prueba →</button>
-    </div>
-  `);
-  document.getElementById('startDrillBtn').addEventListener('click', ()=>{
-    if(key==='dash') renderDashDrill();
-    else if(key==='bench') renderBenchDrill();
-    else renderAgilityDrill();
-  });
-}
-
 function renderCombine(){
-  if(S.combineStep === 0) return renderCombineIntro('dash');
-  if(S.combineStep === 1) return renderCombineIntro('bench');
-  if(S.combineStep === 2) return renderCombineIntro('agility');
+  if(S.combineStep === 0) return renderDashDrill();
+  if(S.combineStep === 1) return renderBenchDrill();
+  if(S.combineStep === 2) return renderAgilityDrill();
+  if(S.combineStep === 3) return renderExtraDrill();
 }
 
 function renderDashDrill(){
   const bonus = S.combineTrainingBonus.dash||0;
+  const info = COMBINE_DRILL_INFO.dash;
   el(`
     ${fieldTracker()}
-    <div class="eyebrow">NFL Combine — Prueba 1 de 3</div>
-    <h1 class="display">40 Yardas</h1>
+    <div class="eyebrow">NFL Combine — Prueba 1 de 4</div>
+    <h1 class="display">${info.title}</h1>
     <div class="card">
-      <p class="lead">Detén la barra justo en la zona verde para lograr el mejor tiempo posible.</p>
-      <div class="combine-track">
-        <div class="combine-zone"></div>
-        <div class="combine-marker" id="dashMarker"></div>
+      <p class="sub" style="margin-bottom:10px;">${info.desc}</p>
+      ${bonus ? `<div class="chip" style="margin-bottom:12px;">Bono de tu preparación: <b style="color:var(--gold);">+${bonus}</b></div>` : ''}
+      <div id="drillStage">
+        <div class="combine-track">
+          <div class="combine-zone"></div>
+          <div class="combine-marker" id="dashMarker"></div>
+        </div>
+        <button class="btn" id="dashBtn" style="width:100%;">¡DETENTE!</button>
       </div>
-      <button class="btn" id="dashBtn" style="width:100%;">¡DETENTE!</button>
     </div>
   `);
   let pos_ = 0, dir = 1;
@@ -1788,23 +2525,27 @@ function renderDashDrill(){
     const dist = Math.abs(pos_-target);
     const score = clamp(Math.round(100 - dist*3) + bonus, 5, 100);
     S.combineScores.dash = score;
-    renderDrillResultScreen('40 Yardas: Velocidad', score, ()=>{ S.combineStep=1; render(); });
+    flashDrillResult(score, ()=>{ S.combineStep=1; render(); });
   });
 }
 
 function renderBenchDrill(){
   const bonus = S.combineTrainingBonus.bench||0;
+  const info = COMBINE_DRILL_INFO.bench;
   el(`
     ${fieldTracker()}
-    <div class="eyebrow">NFL Combine — Prueba 2 de 3</div>
-    <h1 class="display">Press de Banca</h1>
+    <div class="eyebrow">NFL Combine — Prueba 2 de 4</div>
+    <h1 class="display">${info.title}</h1>
     <div class="card">
-      <p class="lead">Haz clic lo más rápido posible durante 5 segundos para sumar repeticiones.</p>
-      <div class="statbar" style="grid-template-columns:1fr 1fr; margin-bottom:16px;">
-        <div class="stat"><div class="v" id="benchTimer">5.0</div><div class="k">Segundos</div></div>
-        <div class="stat good"><div class="v" id="benchReps">0</div><div class="k">Repeticiones</div></div>
+      <p class="sub" style="margin-bottom:10px;">${info.desc}</p>
+      ${bonus ? `<div class="chip" style="margin-bottom:12px;">Bono de tu preparación: <b style="color:var(--gold);">+${bonus}</b></div>` : ''}
+      <div id="drillStage">
+        <div class="statbar" style="grid-template-columns:1fr 1fr; margin-bottom:16px;">
+          <div class="stat"><div class="v" id="benchTimer">5.0</div><div class="k">Segundos</div></div>
+          <div class="stat good"><div class="v" id="benchReps">0</div><div class="k">Repeticiones</div></div>
+        </div>
+        <button class="btn" id="benchBtn" style="width:100%; font-size:20px; padding:22px;">¡EMPUJA!</button>
       </div>
-      <button class="btn" id="benchBtn" style="width:100%; font-size:20px; padding:22px;">¡EMPUJA!</button>
     </div>
   `);
   let reps = 0, timeLeft = 5.0, done = false;
@@ -1820,7 +2561,7 @@ function renderBenchDrill(){
       btn.disabled = true;
       const score = clamp(Math.round(reps*6.5) + bonus, 5, 100);
       S.combineScores.bench = score;
-      renderDrillResultScreen('Press de Banca', score, ()=>{ S.combineStep=2; render(); });
+      flashDrillResult(score, ()=>{ S.combineStep=2; render(); });
     }
   }, 100);
   btn.addEventListener('click', ()=>{
@@ -1832,16 +2573,20 @@ function renderBenchDrill(){
 
 function renderAgilityDrill(){
   const bonus = S.combineTrainingBonus.agility||0;
+  const info = COMBINE_DRILL_INFO.agility;
   el(`
     ${fieldTracker()}
-    <div class="eyebrow">NFL Combine — Prueba 3 de 3</div>
-    <h1 class="display">Drill de Agilidad</h1>
+    <div class="eyebrow">NFL Combine — Prueba 3 de 4</div>
+    <h1 class="display">${info.title}</h1>
     <div class="card">
-      <p class="lead">Toca los conos en el orden en que se iluminen, lo más rápido posible.</p>
-      <div class="cone-row">
-        <div class="cone" data-idx="0">🔶</div>
-        <div class="cone" data-idx="1">🔶</div>
-        <div class="cone" data-idx="2">🔶</div>
+      <p class="sub" style="margin-bottom:10px;">${info.desc}</p>
+      ${bonus ? `<div class="chip" style="margin-bottom:12px;">Bono de tu preparación: <b style="color:var(--gold);">+${bonus}</b></div>` : ''}
+      <div id="drillStage">
+        <div class="cone-row">
+          <div class="cone" data-idx="0">🔶</div>
+          <div class="cone" data-idx="1">🔶</div>
+          <div class="cone" data-idx="2">🔶</div>
+        </div>
       </div>
     </div>
   `);
@@ -1863,11 +2608,191 @@ function renderAgilityDrill(){
       if(step >= 3){
         const score = clamp(Math.round(100 - (totalMs-600)/18) + bonus, 5, 100);
         S.combineScores.agility = score;
-        renderDrillResultScreen('Drill de Agilidad', score, finishCombine);
+        flashDrillResult(score, ()=>{ S.combineStep=3; render(); });
       } else {
         lightCurrent();
       }
     });
+  });
+}
+
+const POSITION_DRILL_INFO = {
+  skill: {key:'extra', title:'Gauntlet Drill — Prueba de Manos', icon:'🏈',
+    desc:'Vas a recibir pases desde distintos ángulos, uno detrás de otro. Toca el balón apenas aparezca, en el orden correcto, sin fallar ninguno.'},
+  trench: {key:'extra', title:'Empuje de Trineo — Prueba de Potencia', icon:'💪',
+    desc:'Tienes 5 segundos para hacer clic en "¡EMPUJA!" tantas veces como puedas mientras empujas el trineo de entrenamiento.'},
+  front7: {key:'extra', title:'Prueba de Derribo — Tiempo de Reacción', icon:'🎯',
+    desc:'Un objetivo se va a iluminar en un momento aleatorio, después de una breve espera. Toca "¡DERRIBAR!" apenas se encienda, lo más rápido posible.'},
+  secondary: {key:'extra', title:'Prueba de Reacción — Cobertura', icon:'⚡',
+    desc:'Un objetivo se va a iluminar en un momento aleatorio, después de una breve espera. Toca "¡REACCIONAR!" apenas se encienda, lo más rápido posible.'},
+  specialist: {key:'extra', title:'Gol de Campo Extendido — Prueba de Precisión', icon:'🥅',
+    desc:'Detén la barra justo en la zona verde para clavar el gol de campo desde larga distancia.'},
+};
+
+function renderExtraDrill(){
+  const group = pos().group;
+  if(group === 'trench'){
+    return renderExtraMashDrill();
+  } else if(group === 'front7' || group === 'secondary'){
+    return renderExtraReactionDrill();
+  } else if(group === 'specialist'){
+    return renderExtraKickDrill();
+  } else {
+    return renderExtraGauntletDrill();
+  }
+}
+
+function renderExtraGauntletDrill(){
+  el(`
+    ${fieldTracker()}
+    <div class="eyebrow">NFL Combine — Prueba 4 de 4</div>
+    <h1 class="display">Gauntlet Drill</h1>
+    <div class="card">
+      <p class="sub" style="margin-bottom:10px;">Toca el balón apenas se ilumine, en el orden correcto, lo más rápido posible.</p>
+      <div id="drillStage">
+        <div class="cone-row">
+          <div class="cone" data-idx="0">🏈</div>
+          <div class="cone" data-idx="1">🏈</div>
+          <div class="cone" data-idx="2">🏈</div>
+        </div>
+      </div>
+    </div>
+  `);
+  const order = shuffle([0,1,2]);
+  let step = 0, segStart = Date.now(), totalMs = 0;
+  const cones = document.querySelectorAll('.cone');
+  function lightCurrent(){
+    cones.forEach(c=>c.classList.remove('active'));
+    cones[order[step]].classList.add('active');
+    segStart = Date.now();
+  }
+  lightCurrent();
+  cones.forEach(c=>{
+    c.addEventListener('click', ()=>{
+      const idx = parseInt(c.dataset.idx);
+      if(idx !== order[step]) return;
+      totalMs += (Date.now()-segStart);
+      step++;
+      if(step >= 3){
+        const score = clamp(Math.round(100 - (totalMs-600)/18), 5, 100);
+        S.combineScores.extra = score;
+        flashDrillResult(score, finishCombine);
+      } else {
+        lightCurrent();
+      }
+    });
+  });
+}
+
+function renderExtraMashDrill(){
+  el(`
+    ${fieldTracker()}
+    <div class="eyebrow">NFL Combine — Prueba 4 de 4</div>
+    <h1 class="display">Empuje de Trineo</h1>
+    <div class="card">
+      <p class="sub" style="margin-bottom:10px;">Tienes 5 segundos para hacer clic en "¡EMPUJA!" tantas veces como puedas.</p>
+      <div id="drillStage">
+        <div class="statbar" style="grid-template-columns:1fr 1fr; margin-bottom:16px;">
+          <div class="stat"><div class="v" id="sledTimer">5.0</div><div class="k">Segundos</div></div>
+          <div class="stat good"><div class="v" id="sledReps">0</div><div class="k">Empujones</div></div>
+        </div>
+        <button class="btn" id="sledBtn" style="width:100%; font-size:20px; padding:22px;">¡EMPUJA!</button>
+      </div>
+    </div>
+  `);
+  let reps = 0, timeLeft = 5.0, done = false;
+  const repsEl = document.getElementById('sledReps');
+  const timerEl = document.getElementById('sledTimer');
+  const btn = document.getElementById('sledBtn');
+  const iv = setInterval(()=>{
+    timeLeft = Math.max(0, timeLeft-0.1);
+    timerEl.textContent = timeLeft.toFixed(1);
+    if(timeLeft <= 0 && !done){
+      done = true;
+      clearInterval(iv);
+      btn.disabled = true;
+      const score = clamp(Math.round(reps*6.5), 5, 100);
+      S.combineScores.extra = score;
+      flashDrillResult(score, finishCombine);
+    }
+  }, 100);
+  btn.addEventListener('click', ()=>{
+    if(done) return;
+    reps++;
+    repsEl.textContent = reps;
+  });
+}
+
+function renderExtraReactionDrill(){
+  const isTackle = pos().group === 'front7';
+  el(`
+    ${fieldTracker()}
+    <div class="eyebrow">NFL Combine — Prueba 4 de 4</div>
+    <h1 class="display">${isTackle ? 'Prueba de Derribo' : 'Prueba de Reacción'}</h1>
+    <div class="card" style="text-align:center;">
+      <p class="sub" style="margin-bottom:10px;">Espera a que el círculo se encienda en rojo y toca lo más rápido posible.</p>
+      <div id="drillStage">
+        <div id="reactionTarget" class="reaction-target">ESPERA...</div>
+      </div>
+    </div>
+  `);
+  const target = document.getElementById('reactionTarget');
+  let ready = false, tooSoon = false, startTime = 0;
+  const delay = rand(1200, 3200);
+  setTimeout(()=>{
+    if(tooSoon) return;
+    ready = true;
+    startTime = Date.now();
+    target.textContent = isTackle ? '¡DERRIBAR!' : '¡REACCIONAR!';
+    target.classList.add('active');
+  }, delay);
+  target.addEventListener('click', ()=>{
+    if(!ready){
+      tooSoon = true;
+      target.textContent = '¡Muy pronto!';
+      const score = 15;
+      S.combineScores.extra = score;
+      setTimeout(()=>flashDrillResult(score, finishCombine), 700);
+      return;
+    }
+    const reactionMs = Date.now()-startTime;
+    const score = clamp(Math.round(100 - (reactionMs-150)/4), 5, 100);
+    S.combineScores.extra = score;
+    flashDrillResult(score, finishCombine);
+  });
+}
+
+function renderExtraKickDrill(){
+  el(`
+    ${fieldTracker()}
+    <div class="eyebrow">NFL Combine — Prueba 4 de 4</div>
+    <h1 class="display">Gol de Campo Extendido</h1>
+    <div class="card">
+      <p class="sub" style="margin-bottom:10px;">Detén la barra justo en la zona verde para clavar el gol de campo desde larga distancia.</p>
+      <div id="drillStage">
+        <div class="combine-track">
+          <div class="combine-zone"></div>
+          <div class="combine-marker" id="kickMarker"></div>
+        </div>
+        <button class="btn" id="kickBtn" style="width:100%;">¡PATEAR!</button>
+      </div>
+    </div>
+  `);
+  let pos_ = 0, dir = 1;
+  const marker = document.getElementById('kickMarker');
+  const iv = setInterval(()=>{
+    pos_ += dir*2.7;
+    if(pos_>=100){ pos_=100; dir=-1; }
+    if(pos_<=0){ pos_=0; dir=1; }
+    marker.style.left = pos_+'%';
+  }, 16);
+  document.getElementById('kickBtn').addEventListener('click', ()=>{
+    clearInterval(iv);
+    const target = 80;
+    const dist = Math.abs(pos_-target);
+    const score = clamp(Math.round(100 - dist*3), 5, 100);
+    S.combineScores.extra = score;
+    flashDrillResult(score, finishCombine);
   });
 }
 
@@ -1903,7 +2828,7 @@ function generateCollegeStatLine(){
 
 function finishCombine(){
   const sc = S.combineScores;
-  S.combineScore = Math.round((sc.dash+sc.bench+sc.agility)/3);
+  S.combineScore = Math.round((sc.dash+sc.bench+sc.agility+sc.extra)/4);
   S.collegeStatLine = generateCollegeStatLine();
   S.screen = 'combinesummary';
   render();
@@ -1923,10 +2848,11 @@ function renderCombineSummary(){
     <div class="eyebrow">NFL Combine — Reporte Final</div>
     <h1 class="display">Reporte de Ojeadores</h1>
     <div class="card">
-      <div class="statbar statbar-4">
+      <div class="statbar">
         <div class="stat"><div class="v">${S.combineScores.dash}</div><div class="k">40 Yardas</div></div>
         <div class="stat"><div class="v">${S.combineScores.bench}</div><div class="k">Banca</div></div>
         <div class="stat"><div class="v">${S.combineScores.agility}</div><div class="k">Agilidad</div></div>
+        <div class="stat"><div class="v">${S.combineScores.extra}</div><div class="k">${POSITION_DRILL_INFO[pos().group].title.split(' —')[0]}</div></div>
         <div class="stat good"><div class="v">${S.combineScore}</div><div class="k">Combine</div></div>
       </div>
       <p class="sub" style="margin-bottom:14px;">${combineRealWorldLine()}</p>
@@ -1941,6 +2867,7 @@ function runDraft(){
   const college = COLLEGES[S.collegeIdx];
   let score = college.stock + S.prepScoreByGroup[pos().group]*1.6 + (S.combineScore-50)*0.5 + (S.collegeStatBonus||0) + rand(-6,6);
   score = clamp(score, 0, 100);
+  if(S.challenge === 'undrafted') score = Math.min(score, 15);
 
   let round, ovrBase, ovrRange;
   if(score >= 90){ round='Ronda 1'; ovrBase=65; ovrRange=8; }
@@ -1968,9 +2895,18 @@ function runDraft(){
   if(ob.money) S.money = Math.round((S.money + ob.money)*10)/10;
   if(S.origin.growthMultiplier) S.growthMultiplier = S.origin.growthMultiplier;
 
+  applyChallengeToStart();
   S.peakOvr = S.ovr;
   S.prevOvr = S.ovr;
   S.age = 21;
+  S.rival = {
+    name: MOCK_PROSPECT_NAMES[Math.floor(Math.random()*MOCK_PROSPECT_NAMES.length)] + '',
+    ovr: S.ovr + rand(-4,5),
+    teamName: TEAMS[Math.floor(Math.random()*TEAMS.length)].name,
+    wins:0, losses:0,
+  };
+  S.streaks = {risky:0, team:0};
+  S.forcedEvent = null;
 
   // Signing bonus in millions of USD, scaled to real NFL rookie contract ranges
   const bonusByRound = {'Ronda 1':22, 'Ronda 2':9, 'Ronda 3':4.5, 'Rondas 4-5':2, 'Rondas 6-7':0.9, 'Agente Libre No Drafteado':0.2};
@@ -1988,8 +2924,74 @@ function runDraft(){
 
   S.draft = { round, score:Math.round(score), collegeTag: college.tag };
   S.timeline.push({yr:'Draft', text:`Elegido en ${round} por los ${S.team.name}, ${college.tag}.`});
+
+  generateDraftClassRivals();
+  S.bigBoard = generateBigBoard();
   S.screen = 'draftcard';
   render();
+}
+
+const DRAFT_CLASS_QUALITY_TIERS = [
+  {label:'un jugador de equipos especiales', weight:35, min:10, max:50},
+  {label:'un titular sólido de carrera de rol', weight:30, min:50, max:90},
+  {label:'un ícono de su franquicia', weight:20, min:90, max:150},
+  {label:'un finalista perenne del Salón de la Fama', weight:12, min:150, max:205},
+  {label:'una leyenda inmortal de la liga', weight:3, min:205, max:255},
+];
+
+function rollRivalOutcome(){
+  const roll = Math.random()*100;
+  let cum = 0;
+  for(const t of DRAFT_CLASS_QUALITY_TIERS){
+    cum += t.weight;
+    if(roll <= cum) return { score: Math.round(rand(t.min,t.max)), label: t.label };
+  }
+  return { score: 80, label: 'un titular sólido de carrera de rol' };
+}
+
+function generateDraftClassRivals(){
+  const names = shuffle(MOCK_PROSPECT_NAMES).slice(0,3);
+  S.draftClassRivals = names.map(name=>{
+    const outcome = rollRivalOutcome();
+    return { name, position: MOCK_PROSPECT_POS[Math.floor(Math.random()*MOCK_PROSPECT_POS.length)], score: outcome.score, label: outcome.label };
+  });
+}
+
+function generateBigBoard(){
+  const shuffled = shuffle(MOCK_PROSPECT_NAMES);
+  const board = [];
+  for(let i=0;i<10;i++){
+    board.push({ rank:i+1, name:shuffled[i%shuffled.length], position: MOCK_PROSPECT_POS[Math.floor(Math.random()*MOCK_PROSPECT_POS.length)], isPlayer:false });
+  }
+  if(S.draftPickNumber && S.draftPickNumber<=10){
+    board[S.draftPickNumber-1] = { rank:S.draftPickNumber, name:S.name, position:pos().code, isPlayer:true };
+  }
+  return board;
+}
+
+function renderBigBoard(){
+  const board = S.bigBoard;
+  const rows = board.map(b=>`
+    <div class="bullet" style="${b.isPlayer?'border-left-color:var(--gold);':''}">
+      <span class="b-icon">${b.isPlayer?'⭐':'#'+b.rank}</span>
+      <span>${b.isPlayer?`<b style="color:var(--gold);">${b.name}</b>`:b.name} — ${b.position}</span>
+    </div>
+  `).join('');
+  const offBoard = !S.draftPickNumber || S.draftPickNumber > 10;
+  el(`
+    <div class="eyebrow">Previa al Draft</div>
+    <h1 class="display">Big Board de Analistas</h1>
+    <div class="card">
+      <p class="lead">Así ven los analistas a los mejores prospectos de esta clase, justo antes de la noche del Draft.</p>
+      <div class="bullet-list">${rows}</div>
+      ${offBoard ? `<p class="sub">Tu nombre no aparece en este Top 10 según los analistas... todavía.</p>` : ''}
+      <button class="btn" id="toDraftCardBtn" style="width:100%; margin-top:14px;">Ver la noche del Draft →</button>
+    </div>
+  `);
+  document.getElementById('toDraftCardBtn').addEventListener('click', ()=>{
+    S.screen = 'draftcard';
+    render();
+  });
 }
 
 const MOCK_PROSPECT_NAMES = ['Tyler Brooks','Marcus Webb','Jalen Ortiz','Cody Simmons','Xavier Fenwick','Devin Marsh','Trey Caldwell','Isaiah Ford','Lucas Dunn','Bryce Halloway'];
@@ -2027,6 +3029,7 @@ function renderDraftCard(){
   const numMocks = 3;
   let i = 0;
   function showNextMock(){
+    if(!wrap.isConnected) return;
     if(i < numMocks){
       const fname = MOCK_PROSPECT_NAMES[Math.floor(Math.random()*MOCK_PROSPECT_NAMES.length)];
       const fpos = MOCK_PROSPECT_POS[Math.floor(Math.random()*MOCK_PROSPECT_POS.length)];
@@ -2039,18 +3042,25 @@ function renderDraftCard(){
       i++;
       setTimeout(showNextMock, 550);
     } else {
-      wrap.innerHTML = draftCardHtml();
-      const btn = document.getElementById('toDraftStatsBtn');
+      revealCard();
     }
   }
-  setTimeout(showNextMock, 400);
-  setTimeout(()=>{
-    wrap.innerHTML = draftCardHtml() + `<button class="btn" id="toDraftStatsBtn" style="width:100%; margin-top:16px;">Ver mi ficha completa →</button>`;
-    document.getElementById('toDraftStatsBtn').addEventListener('click', ()=>{
-      S.screen = 'draftresult';
-      render();
+  function revealCard(){
+    wrap.innerHTML = draftCardHtml() + `
+      <p class="lead" style="margin-top:14px;">Tu historia es la de <b>${S.origin.name}</b>. Llegas a la liga con el número <b>#${S.jerseyNumber}</b> y un nivel inicial de <b>${S.ovr}</b>.</p>
+      <div class="meta-row">
+        <span class="chip">Posición <b>${pos().label}</b></span>
+        <span class="chip">Nivel inicial <b>${S.ovr}</b></span>
+        <span class="chip">Fama <b>${S.fame}</b></span>
+      </div>
+      <button class="btn" id="startBtn" style="width:100%; margin-top:14px;">Comenzar tu carrera →</button>`;
+    document.getElementById('startBtn').addEventListener('click', ()=>{
+      S.year = 1;
+      refillQueue(pos());
+      goToEvent();
     });
-  }, 400 + numMocks*550 + 300);
+  }
+  setTimeout(showNextMock, 400);
 }
 
 function renderDraftResult(){
@@ -2143,14 +3153,126 @@ function keyMomentEvent(){
   return { icon:"🎯 Momento Clave", banner:true, text:()=>m.text, choices:m.choices };
 }
 
+const SAVE_KEY = 'plp_goat_save_v1';
+function saveCareer(){
+  if(!S || S.isDaily || S.year < 1 || S.retired) return;
+  try{
+    const copy = Object.assign({}, S, {pendingEvent:null, pendingRarities:[], pendingSeasonPhase1:null, pendingCelebration:null, pendingInjury:null, pendingFeedback:null, pendingSeasonNote:null, screen:'event'});
+    localStorage.setItem(SAVE_KEY, JSON.stringify({v:1, savedAt:Date.now(), state:copy}));
+  }catch(e){}
+}
+function loadSave(){
+  try{
+    const raw = localStorage.getItem(SAVE_KEY);
+    if(!raw) return null;
+    const d = JSON.parse(raw);
+    if(!d || !d.state || !d.state.posCode) return null;
+    return d;
+  }catch(e){ return null; }
+}
+function clearSave(){ try{ localStorage.removeItem(SAVE_KEY); }catch(e){} }
+function resumeCareer(){
+  const d = loadSave();
+  if(!d) return;
+  Math.random = _nativeRandom;
+  S = d.state;
+  S.isDaily = false;
+  refillQueue(pos());
+  goToEvent();
+}
+
+const SEASON_GOALS = {
+  playoffs:  {text:'Llevar a tu equipo a playoffs', min:0,  check:(r)=>r.playoffs, reward:{legacy:2, fame:3}},
+  wins11:    {text:'Ganar 11 partidos o más con tu equipo', min:0, check:(r)=>r.wins>=11, reward:{legacy:2, fame:3}},
+  healthy:   {text:'Terminar la temporada sin lesión', min:0, check:(r)=>!r.injured, reward:{health:4, legacy:1}},
+  calm:      {text:'Cerrar el año con la Presión en 50 o menos', min:0, check:(r)=>S.presion<=50, reward:{quimica:4, fame:2}},
+  probowl:   {text:'Ser seleccionado al Pro Bowl', min:60, check:(r)=>r.madeProBowl, reward:{legacy:4, fame:4}},
+  division:  {text:'Ser campeón de tu división', min:55, check:(r)=>r.divisionChamp, reward:{legacy:4, fame:3, quimica:3}},
+  allpro:    {text:'Entrar al equipo All-Pro', min:75, check:(r)=>r.madeAllPro, reward:{legacy:7, fame:6, skillPoints:1}},
+  superbowl: {text:'Ganar el Super Bowl', min:70, check:(r)=>r.superbowl, reward:{legacy:10, fame:8, skillPoints:1}},
+};
+function rollSeasonGoal(){
+  const keys = Object.keys(SEASON_GOALS).filter(k=>S.ovr >= SEASON_GOALS[k].min);
+  const key = keys[Math.floor(Math.random()*keys.length)];
+  return {key, year:S.year};
+}
+function applyGoalReward(rw){
+  if(rw.legacy) S.legacy += rw.legacy;
+  if(rw.fame) S.fame = clamp(S.fame+rw.fame,0,100);
+  if(rw.health) S.health = clamp(S.health+rw.health,0,100);
+  if(rw.quimica) S.quimica = clamp(S.quimica+rw.quimica,0,100);
+  if(rw.skillPoints) S.skillPoints += rw.skillPoints;
+}
+function rewardLabel(rw){
+  const m = {legacy:'Legado', fame:'Fama', health:'Salud', quimica:'Química', skillPoints:'Punto de Habilidad'};
+  return Object.keys(rw).map(k=>`+${rw[k]} ${m[k]}`).join(', ');
+}
+function seasonGoalCardHtml(){
+  const g = S.seasonGoal;
+  if(!g || g.year !== S.year) return '';
+  const def = SEASON_GOALS[g.key];
+  return `
+    <div class="goal-card">
+      <div class="cinematic-kicker" style="margin-bottom:4px;">Meta de la temporada</div>
+      <div class="goal-text">🎯 ${def.text}</div>
+      <div class="sub" style="margin-top:4px;">Recompensa: ${rewardLabel(def.reward)}</div>
+    </div>`;
+}
+
+function trackStreaks(fx){
+  if(!S.streaks) S.streaks = {risky:0, team:0};
+  const risky = (fx.health||0) <= -3 || (fx.presion||0) >= 4 || (fx.quimica||0) <= -3;
+  const team = (fx.quimica||0) >= 3;
+  S.streaks.risky = risky ? S.streaks.risky + 1 : 0;
+  S.streaks.team = team ? S.streaks.team + 1 : 0;
+  if(S.streaks.risky >= 3){ S.forcedEvent = 'scandal'; S.streaks.risky = 0; }
+  else if(S.streaks.team >= 3){ S.forcedEvent = 'favor'; S.streaks.team = 0; }
+}
+
+const FORCED_EVENTS = {
+  scandal: () => ({
+    icon:'📰 Consecuencias', banner:true,
+    text:()=>`Tus últimas decisiones llegaron a los medios: los titulares hablan de tu "estilo de vida". El vestidor y los patrocinadores esperan tu reacción.`,
+    choices:[
+      {label:'Dar la cara en conferencia y pedir disculpas', tags:[{t:'up',s:'+Química'},{t:'up',s:'-Presión'},{t:'risk',s:'-Fama'}], fx:{quimica:4,presion:-3,fame:-3}, feedback:'Asumiste la responsabilidad y el vestidor lo valoró.'},
+      {label:'Culpar a la prensa y seguir como si nada', tags:[{t:'up',s:'+Fama'},{t:'risk',s:'-Química'},{t:'risk',s:'+Presión'}], fx:{fame:3,quimica:-5,presion:5}, feedback:'El polémico mensaje dividió a la afición y al vestidor.'},
+      {label:'Desaparecer de redes y entrenar en silencio', tags:[{t:'up',s:'+Nivel'},{t:'risk',s:'-Fama'}], fx:{ovr:2,fame:-5,presion:-2}, feedback:'Bajaste el perfil y volviste enfocado al trabajo.'},
+    ]}),
+  favor: () => ({
+    icon:'🤝 Tu equipo te respalda', banner:true,
+    text:()=>`Por cómo has cuidado el vestidor, tus compañeros te ofrecen devolverte el favor. Es el momento de aprovechar esa confianza.`,
+    choices:[
+      {label:'Pedirles que te ayuden con entrenamientos extra', tags:[{t:'up',s:'+Nivel'},{t:'up',s:'+Química'}], fx:{ovr:3,quimica:3}, feedback:'Tus compañeros se quedaron contigo después de cada práctica.'},
+      {label:'Invitar a la línea a una cena en tu casa', tags:[{t:'up',s:'+Química'},{t:'up',s:'+Clutch'},{t:'info',s:'-$0.3M'}], fx:{quimica:6,clutch:2,money:-0.3}, feedback:'La cena unió al grupo como nunca.'},
+      {label:'Dedicarles tu siguiente logro públicamente', tags:[{t:'up',s:'+Fama'},{t:'up',s:'+Legado'}], fx:{fame:4,legacy:2,quimica:3}, feedback:'Tu gesto se volvió viral entre los aficionados.'},
+    ]}),
+  duel: () => ({
+    icon:'⚔️ Duelo de Generación', banner:true,
+    text:()=>`${S.rival.name}, tu rival de la clase del Draft (hoy en ${S.rival.teamName}), juega contra tu equipo esta semana. Todos esperan el duelo. Rivalidad: ${S.rival.wins}-${S.rival.losses}.`,
+    choices:[
+      {label:'Provocarlo en la previa para encender el partido', tags:[{t:'up',s:'+Fama'},{t:'up',s:'+Clutch'},{t:'risk',s:'+Presión'}], fx:{fame:4,clutch:3,presion:5}, feedback:'La previa se volvió tendencia y subió la tensión.'},
+      {label:'Estudiar su video obsesivamente toda la semana', tags:[{t:'up',s:'+IQ'},{t:'up',s:'+Nivel'}], fx:{iq:4,ovr:1}, feedback:'Llegaste con el plan perfecto para anularlo.'},
+      {label:'Saludarlo con respeto y dejar hablar al campo', tags:[{t:'up',s:'+Química'},{t:'up',s:'+Fama'}], fx:{quimica:3,fame:2,legacy:1}, feedback:'Tu actitud ganó respeto dentro y fuera del campo.'},
+      {label:'Ignorarlo y concentrarte en tu propio juego', tags:[{t:'up',s:'+Clutch'},{t:'up',s:'-Presión'}], fx:{clutch:2,presion:-2}, feedback:'Mantuviste la calma y jugaste tu partido.'},
+    ]}),
+};
+
 function goToEvent(){
-  if(S.year % 3 === 0){
+  if(!S.seasonGoal || S.seasonGoal.year !== S.year) S.seasonGoal = rollSeasonGoal();
+  if(S.forcedEvent && FORCED_EVENTS[S.forcedEvent]){
+    const ev = FORCED_EVENTS[S.forcedEvent]();
+    S.forcedEvent = null;
+    setPendingEvent(ev);
+  } else if(S.year % 3 === 0){
     setPendingEvent(keyMomentEvent());
+  } else if(S.rival && S.year % 4 === 2){
+    setPendingEvent(FORCED_EVENTS.duel());
   } else {
     setPendingEvent(nextEvent(pos()));
   }
   S.screen = 'event';
   render();
+  saveCareer();
 }
 
 const RARITY_DEFS = [
@@ -2184,6 +3306,36 @@ function scaleFx(fx, mult){
   return out;
 }
 
+const COMMERCIAL_OUTCOMES = {
+  good: [
+    {text:"El comercial se volvió viral y todo el país repite tu frase. Llegaste al partido con una energía imparable.", fx:{fame:8,morale:0,clutch:3}},
+    {text:"El rodaje fue rápido y divertido; hasta te sirvió para despejar la cabeza antes del domingo.", fx:{fame:4,health:3,presion:-4}},
+    {text:"La marca quedó tan contenta que te extendió el contrato con un bono inesperado.", fx:{fame:5,money:4}},
+    {text:"Tus compañeros aparecieron como extras y el rodaje terminó uniendo más al vestidor.", fx:{quimica:7,fame:3}},
+  ],
+  bad: [
+    {text:"El rodaje se alargó hasta la madrugada y llegaste al entrenamiento agotado.", fx:{health:-7,ovr:-3}},
+    {text:"Una toma salió ridícula, se filtró, y se convirtió en el meme de la semana en toda la liga.", fx:{fame:3,presion:7,quimica:-4}},
+    {text:"Te torciste el tobillo haciendo una escena de acción que no debiste aceptar.", fx:{health:-10,ovr:-4}},
+    {text:"El cuerpo técnico se molestó por las horas que le robaste a la preparación del partido.", fx:{coachTrust:-8,ovr:-2}},
+  ],
+};
+
+function resolveCommercialGamble(kind, deltas){
+  const badOdds = kind==='heavy' ? 0.5 : (kind==='wild' ? 0.45 : 0.3);
+  const isBad = Math.random() < badOdds;
+  const pool = isBad ? COMMERCIAL_OUTCOMES.bad : COMMERCIAL_OUTCOMES.good;
+  const outcome = pool[Math.floor(Math.random()*pool.length)];
+  const mult = kind==='heavy' ? 1.4 : (kind==='wild' ? 1.25 : 1);
+  const scaled = {};
+  Object.keys(outcome.fx).forEach(k=>{ scaled[k] = outcome.fx[k]*mult; });
+  const newDeltas = applyEffects(scaled);
+  Object.keys(newDeltas).forEach(k=>{
+    deltas[k] = (deltas[k]||0) + newDeltas[k];
+  });
+  return outcome.text;
+}
+
 function renderEvent(){
   const ev = S.pendingEvent;
   const posLabel = pos().label.toLowerCase();
@@ -2202,7 +3354,9 @@ function renderEvent(){
     ${fieldTracker()}
     <div class="eyebrow">Temporada ${S.year} · Edad ${S.age}</div>
     ${playerCardHtml()}
+    ${seasonGoalCardHtml()}
     <div class="card ${ev.banner ? 'clasico-card' : ''}">
+      ${ev.graphic ? `<div class="event-graphic">${ev.graphic()}</div>` : ''}
       <div class="event-icon">${ev.icon}</div>
       <h2 class="section">Decisión del año</h2>
       <p class="lead">${text}</p>
@@ -2215,10 +3369,16 @@ function renderEvent(){
       const c = ev.choices[idx];
       const rarity = rarities[idx];
       const deltas = applyEffects(scaleFx(c.fx, rarity.mult));
+      let extraFeedback = '';
+      if((ev.resolveType||'normal')==='normal' && !ev.banner) trackStreaks(c.fx||{});
+      if(c.gamble){
+        const outcome = resolveCommercialGamble(c.gamble, deltas);
+        extraFeedback = ' ' + outcome;
+      }
       const resolveType = ev.resolveType || 'normal';
       if(resolveType === 'normal'){
         S.pendingRiskMod = (c.riskMod||0) * rarity.mult;
-        S.pendingDecisionFeedback = { text: c.feedback, deltas };
+        S.pendingDecisionFeedback = { text: c.feedback + extraFeedback, deltas };
         simulateSeason();
       } else if(resolveType === 'playoff'){
         const ph = S.pendingSeasonPhase1;
@@ -2471,6 +3631,7 @@ function simulateSeason(){
 }
 
 function renderInjuryMoment(){
+  playInjurySound();
   const inj = S.pendingInjury;
   el(`
     ${fieldTracker()}
@@ -2648,8 +3809,28 @@ function finalizeSeason(wonSuperBowl){
 
   S.peakOvr = Math.max(S.peakOvr, S.ovr);
   S.seasonsPlayed++;
+  S.ovrHistory.push({ year: S.year, ovr: Math.round(S.ovr) });
   S.timeline.push({yr:`Año ${S.year}`, text: notes.join(' ')});
 
+  if(S.seasonGoal && S.seasonGoal.year === S.year){
+    const gdef = SEASON_GOALS[S.seasonGoal.key];
+    const ok = !!gdef.check({playoffs:ph.playoffs, wins:ph.wins, injured:ph.injured, madeProBowl:ph.madeProBowl, divisionChamp:ph.divisionChamp, madeAllPro:ph.madeAllPro, superbowl:wonSuperBowl});
+    if(ok){
+      applyGoalReward(gdef.reward);
+      S.goalsMet = (S.goalsMet||0) + 1;
+      notes.push(`Meta cumplida: ${gdef.text.toLowerCase()}. (${rewardLabel(gdef.reward)})`);
+    } else {
+      notes.push(`Meta fallida: ${gdef.text.toLowerCase()}.`);
+    }
+  }
+  if(S.rival){
+    const rv = S.rival;
+    rv.ovr = clamp(rv.ovr + (S.year<=6 ? rand(0.5,3.2) : rand(-2.2,1)), 40, 95);
+    const mine = Math.round(S.ovr), theirs = Math.round(rv.ovr);
+    if(mine >= theirs){ rv.wins++; S.fame = clamp(S.fame+1,0,100); }
+    else { rv.losses++; }
+    notes.push(`Rivalidad con ${rv.name} (${rv.teamName}): tú ${mine} vs ${theirs}. ${mine>=theirs?'Esta temporada le ganas la comparación':'Esta temporada te gana la comparación'} (${rv.wins}-${rv.losses}).`);
+  }
   S.pendingSeasonNote = { notes, wins:ph.wins, playoffs:ph.playoffs, divisionChamp:ph.divisionChamp, madeProBowl:ph.madeProBowl, madeAllPro:ph.madeAllPro, madeMVP:ph.madeMVP, wonSuperBowl, injured:ph.injured, decisionFeedback: S.pendingDecisionFeedback, seasonStats: ph.seasonStats };
   S.pendingDecisionFeedback = null;
   S.prevOvr = ph.ovrBeforeSeason;
@@ -2663,7 +3844,24 @@ function finalizeSeason(wonSuperBowl){
   render();
 }
 
+function ringSvg(size){
+  return `<svg viewBox="0 0 120 120" width="${size}" height="${size}" class="sb-ring" aria-hidden="true">
+    <defs>
+      <linearGradient id="rg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1b0"/><stop offset=".5" stop-color="#d7ad3f"/><stop offset="1" stop-color="#8a6a14"/></linearGradient>
+      <linearGradient id="rg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2c5e"/><stop offset="1" stop-color="#0c1836"/></linearGradient>
+    </defs>
+    <ellipse cx="60" cy="82" rx="34" ry="30" fill="none" stroke="url(#rg1)" stroke-width="10"/>
+    <ellipse cx="60" cy="82" rx="34" ry="30" fill="none" stroke="#8a6a14" stroke-width="1.5" opacity=".6"/>
+    <path d="M22 44 L40 22 H80 L98 44 L90 70 H30 Z" fill="url(#rg1)" stroke="#8a6a14" stroke-width="2"/>
+    <path d="M30 46 L44 28 H76 L90 46 L84 64 H36 Z" fill="url(#rg2)" stroke="#fff1b0" stroke-width="1.5"/>
+    <path d="M60 32 L72 46 L60 62 L48 46 Z" fill="#c8102e" stroke="#fff" stroke-width="1.5"/>
+    <circle cx="36" cy="30" r="2.6" fill="#fff"/><circle cx="84" cy="30" r="2.6" fill="#fff"/><circle cx="26" cy="46" r="2.2" fill="#fff"/><circle cx="94" cy="46" r="2.2" fill="#fff"/>
+    <text x="60" y="52" text-anchor="middle" font-family="Anton,sans-serif" font-size="11" fill="#fff">SB</text>
+  </svg>`;
+}
+
 function renderCelebration(){
+  playCelebrationSound();
   const isSB = S.pendingCelebration === 'superbowl';
   const confetti = Array.from({length:36}, ()=>{
     const left = Math.round(Math.random()*100);
@@ -2676,14 +3874,14 @@ function renderCelebration(){
   }).join('');
   el(`
     <div class="confetti-wrap">${confetti}</div>
-    <div class="eyebrow">${isSB ? '🏆 Campeones' : '👑 Premio Individual'}</div>
-    <h1 class="display text-3d">${isSB ? '¡SUPER BOWL!' : '¡ERES EL MVP!'}</h1>
-    <div class="card" style="text-align:center;">
-      <div style="font-size:64px; margin-bottom:10px;">${isSB ? '🏆' : '👑'}</div>
-      <p class="lead">${isSB
+    <div class="cinematic">
+      <div class="cinematic-kicker">${isSB ? 'Campeones de la NFL' : 'Premio Individual'}</div>
+      <div style="margin-bottom:10px;" class="${isSB ? 'ring-stage' : ''}">${isSB ? ringSvg(120) : icon('crown',72,'#f0a868')}</div>
+      <h1 class="cinematic-hero">${isSB ? '¡SUPER BOWL!' : '¡ERES EL MVP!'}</h1>
+      <p class="lead" style="max-width:460px; margin:0 auto 18px;">${isSB
         ? `${S.name} y los ${S.team.name} son los nuevos campeones de la NFL. El confeti cae, el trofeo Lombardi ya tiene tu nombre grabado en la historia.`
         : `De todos los jugadores de la liga, elegido tú. ${S.name} es el Jugador Más Valioso de la temporada.`}</p>
-      <button class="btn" id="celebrationBtn" style="width:100%; margin-top:10px;">Continuar →</button>
+      <button class="btn" id="celebrationBtn" style="width:100%; max-width:340px;">Continuar →</button>
     </div>
   `);
   document.getElementById('celebrationBtn').addEventListener('click', ()=>{
@@ -2715,6 +3913,8 @@ function seasonHeadline(r){
 }
 
 function iconForNote(note){
+  if(note.startsWith('Meta ')) return '🎯';
+  if(note.startsWith('Rivalidad')) return '⚔️';
   if(note.includes('lesión')) return '🩹';
   if(note.includes('archirrival')) return '⚔️';
   if(note.includes('Pro Bowl') || note.includes('All-Pro')) return '⭐';
@@ -2726,11 +3926,11 @@ function iconForNote(note){
 
 function trophyCaseHtml(earned, heading){
   const items = [
-    {key:'proBowl', label:'Pro Bowl', icon:'⭐', count:S.proBowls},
-    {key:'allPro', label:'All-Pro', icon:'🥇', count:S.allPro},
-    {key:'mvp', label:'MVP', icon:'👑', count:S.mvps},
-    {key:'division', label:'Campeón Divisional', icon:'🎖️', count:S.divisionTitles},
-    {key:'superbowl', label:'Super Bowl', icon:'🏆', count:S.rings},
+    {key:'proBowl', label:'Pro Bowl', icon:icon('star',22,'#4f9dd6'), count:S.proBowls},
+    {key:'allPro', label:'All-Pro', icon:icon('medal',22,'#b06fe0'), count:S.allPro},
+    {key:'mvp', label:'MVP', icon:icon('crown',22,'#f0a868'), count:S.mvps},
+    {key:'division', label:'Campeón Divisional', icon:icon('shield',22,'#7fd68f'), count:S.divisionTitles},
+    {key:'superbowl', label:'Super Bowl', icon:icon('trophy',22,'var(--gold)'), count:S.rings},
   ];
   return `
     <h2 class="section" style="margin-top:4px;">${heading}</h2>
@@ -2925,6 +4125,7 @@ function renderContract(){
     b.addEventListener('click', ()=>{
       const c = b.dataset.c;
       if(c==='extend'){
+        S.contractRenewals = (S.contractRenewals||0) + 1;
         S.pendingRenewalSalary = renewalSalary;
         S.pendingRenewalBonus = renewalBonus;
         S.screen = 'negotiate';
@@ -3198,6 +4399,7 @@ function renderStore(){
       <div class="money-line" style="margin-bottom:16px;">
         <span class="money-amount">$${S.money}M USD disponibles</span>
       </div>
+      ${S.challenge==='nostore' ? '<p class="sub" style="color:var(--danger);">🔒 Reto semanal "Sin Lujos": la tienda está cerrada en esta carrera.</p>' : ''}
       <h2 class="section">💪 Mejoras de Desempeño</h2>
       <div class="shop-grid" style="margin-bottom:20px;">${perfRows}</div>
       <h2 class="section">💎 Lujos · Date el Gusto</h2>
@@ -3210,6 +4412,10 @@ function renderStore(){
       const key = elm.dataset.key;
       if(S.ownedItems[key]) return;
       const price = parseFloat(elm.dataset.price);
+      if(S.challenge === 'nostore'){
+        elm.style.borderColor = 'var(--danger)';
+        return;
+      }
       if(S.money < price){
         elm.style.borderColor = 'var(--danger)';
         return;
@@ -3265,12 +4471,49 @@ function renderRetirePrompt(){
 }
 
 const ACHIEVEMENTS_DEFS = [
-  {key:'cinderella', icon:'👟', name:'Cenicienta', test:()=> S.draft.round==='Agente Libre No Drafteado' && S.finalScore>=135, desc:()=>'Llegaste sin ser drafteado y aun así casi tocaste la estatua.'},
-  {key:'ironman', icon:'🛡️', name:'Iron Man', test:()=> !S.everSeverelyInjured && S.seasonsPlayed>=10, desc:()=>'Diez temporadas o más sin sufrir una lesión grave.'},
-  {key:'streak', icon:'🔥', name:'Racha Dorada', test:()=> S.bestProBowlStreak>=3, desc:()=>`Encadenaste ${S.bestProBowlStreak} Pro Bowls seguidos.`},
-  {key:'comeback', icon:'💊', name:'Comeback Kid', test:()=> S.everSeverelyInjured && S.finalScore>=90, desc:()=>'Superaste una lesión grave y aun así tuviste una gran carrera.'},
-  {key:'loyal', icon:'❤️', name:'Fiel de Corazón', test:()=> S.teamChangesCount===0 && S.seasonsPlayed>=8, desc:()=>'Toda tu carrera con la misma franquicia.'},
+  {key:'cinderella', icon:icon('shoe',22,'#9aa7c4'), name:'Cenicienta', hint:'Llega a 135+ de legado sin ser drafteado.', test:()=> S.draft.round==='Agente Libre No Drafteado' && S.finalScore>=135, desc:()=>'Llegaste sin ser drafteado y aun así casi tocaste la estatua.'},
+  {key:'ironman', icon:icon('armor',22,'#7fd68f'), name:'Iron Man', hint:'10 temporadas sin una lesión grave.', test:()=> !S.everSeverelyInjured && S.seasonsPlayed>=10, desc:()=>'Diez temporadas o más sin sufrir una lesión grave.'},
+  {key:'streak', icon:icon('fire',22,'var(--gold)'), name:'Racha Dorada', hint:'3 Pro Bowls seguidos.', test:()=> S.bestProBowlStreak>=3, desc:()=>`Encadenaste ${S.bestProBowlStreak} Pro Bowls seguidos.`},
+  {key:'comeback', icon:icon('bandage',22,'#f0a868'), name:'Comeback Kid', hint:'Supera una lesión grave y termina con 90+ de legado.', test:()=> S.everSeverelyInjured && S.finalScore>=90, desc:()=>'Superaste una lesión grave y aun así tuviste una gran carrera.'},
+  {key:'loyal', icon:icon('heart',22,'#c8102e'), name:'Fiel de Corazón', hint:'8+ temporadas con un solo equipo.', test:()=> S.teamChangesCount===0 && S.seasonsPlayed>=8, desc:()=>'Toda tu carrera con la misma franquicia.'},
+  {key:'nomad', icon:icon('plane',22,'#4f9dd6'), name:'Nómada', hint:'Juega con 4 franquicias o más.', test:()=> (S.teamChangesCount||0)>=3, desc:()=>'Jugaste con cuatro franquicias o más a lo largo de tu carrera.'},
+  {key:'blindloyalty', icon:icon('handshake',22,'#b06fe0'), name:'Lealtad Ciega', hint:'Renueva tu contrato 2 veces.', test:()=> (S.contractRenewals||0)>=2, desc:()=>'Renovaste tu contrato una y otra vez en vez de probar el mercado.'},
+  {key:'longevity', icon:icon('medal',22,'#7fd68f'), name:'Longevidad', hint:'Juega 15 temporadas.', test:()=> S.seasonsPlayed>=15, desc:()=>`${S.seasonsPlayed} temporadas en la liga: casi nadie dura tanto.`},
+  {key:'kickerring', icon:icon('trophy',22,'var(--gold)'), name:'Pateador Campeón', hint:'Gana un anillo siendo pateador.', test:()=> S.posCode==='K' && S.rings>=1, desc:()=>'Un pateador con anillo: el héroe silencioso.'},
+  {key:'oblivionring', icon:icon('trophy',22,'#9aa7c4'), name:'Del Olvido al Anillo', hint:'Gana un anillo tras no ser drafteado.', test:()=> S.draft.round==='Agente Libre No Drafteado' && S.rings>=1, desc:()=>'Nadie te eligió y aun así levantaste el Lombardi.'},
+  {key:'mvp', icon:icon('crown',22,'#f0a868'), name:'El Mejor de la Liga', hint:'Gana un MVP.', test:()=> S.mvps>=1, desc:()=>'Elegido Jugador Más Valioso de la NFL.'},
+  {key:'dynasty', icon:icon('trophy',22,'var(--gold)'), name:'Dinastía', hint:'Gana 3 anillos.', test:()=> S.rings>=3, desc:()=>`${S.rings} anillos: tu época.`},
+  {key:'richest', icon:icon('bag',22,'#7fd68f'), name:'Multimillonario', hint:'Termina con $300M o más.', test:()=> S.money>=300, desc:()=>`Ganancias de carrera por $${S.money}M.`},
+  {key:'rivalmaster', icon:icon('shield',22,'#c8102e'), name:'Dueño de la Rivalidad', hint:'Gana la comparación con tu rival 8 veces.', test:()=> S.rival && S.rival.wins>=8, desc:()=>`Superaste a ${S.rival.name} ${S.rival.wins} veces.`},
+  {key:'goalgetter', icon:icon('star',22,'#4f9dd6'), name:'Hombre de Metas', hint:'Cumple 6 metas de temporada.', test:()=> (S.goalsMet||0)>=6, desc:()=>`Cumpliste ${S.goalsMet} metas de temporada.`},
+  {key:'hof', icon:icon('crown',22,'var(--gold)'), name:'Salón de la Fama', hint:'Alcanza 210 de legado.', test:()=> S.finalScore>=210, desc:()=>'Te ganaste la estatua.'},
 ];
+
+const ACH_KEY = 'plp_goat_achievements_v1';
+function loadUnlocked(){
+  try{ return JSON.parse(localStorage.getItem(ACH_KEY)) || []; }catch(e){ return []; }
+}
+function saveUnlocked(keys){
+  try{
+    const cur = new Set(loadUnlocked());
+    keys.forEach(k=>cur.add(k));
+    localStorage.setItem(ACH_KEY, JSON.stringify([...cur]));
+  }catch(e){}
+}
+function badgesHtml(){
+  const got = new Set(loadUnlocked());
+  const items = ACHIEVEMENTS_DEFS.map(a=>`
+    <div class="badge-item ${got.has(a.key)?'unlocked':''}" title="${a.hint}">
+      <div class="badge-icon">${got.has(a.key) ? a.icon : '🔒'}</div>
+      <div class="badge-name">${a.name}</div>
+      <div class="badge-hint">${a.hint}</div>
+    </div>`).join('');
+  return `
+    <details class="badges-box">
+      <summary>🏅 Insignias (${got.size}/${ACHIEVEMENTS_DEFS.length})</summary>
+      <div class="badge-grid">${items}</div>
+    </details>`;
+}
 
 function endCareer(closingLine){
   S.retired = true;
@@ -3299,7 +4542,8 @@ function endCareer(closingLine){
   S.finalTier = tier;
   S.finalTierDesc = tierDesc;
   S.closingLine = closingLine;
-  S.achievements = ACHIEVEMENTS_DEFS.filter(a=>a.test());
+  S.achievements = ACHIEVEMENTS_DEFS.filter(a=>{ try{ return a.test(); }catch(e){ return false; } });
+  if(!S.isDaily) saveUnlocked(S.achievements.map(a=>a.key));
   S.screen = 'retirementceremony';
   render();
 }
@@ -3314,14 +4558,16 @@ const RETIREMENT_SPEECHES = [
 function renderRetirementCeremony(){
   const speech = RETIREMENT_SPEECHES[Math.floor(Math.random()*RETIREMENT_SPEECHES.length)];
   el(`
-    <div class="eyebrow">Ceremonia de Retiro</div>
-    <h1 class="display">Número Retirado</h1>
-    <div class="card" style="text-align:center;">
-      <div style="display:flex; justify-content:center; margin-bottom:14px;">${jerseyHtml(S.team, S.jerseyNumber, 100)}</div>
-      <div class="stage-label" style="font-size:20px; margin-bottom:10px;">${S.team.name} RETIRA EL #${S.jerseyNumber}</div>
-      <p class="feedback-quote">"${speech}"</p>
-      <p class="sub">— ${S.name}, en la ceremonia frente a la afición de los ${S.team.name}</p>
-      <button class="btn" id="ceremonyBtn" style="width:100%; margin-top:16px;">Continuar →</button>
+    <div class="cinematic">
+      <div class="cinematic-kicker">Ceremonia de Retiro</div>
+      <div style="display:flex; justify-content:center; margin-bottom:14px;">${jerseyHtml(S.team, S.jerseyNumber, 110)}</div>
+      <h1 class="cinematic-hero">Número<br>Retirado</h1>
+      <div class="stage-label" style="font-size:18px; margin-bottom:14px;">${S.team.name} RETIRA EL #${S.jerseyNumber}</div>
+      <div class="feedback-block" style="text-align:left; max-width:520px; margin:0 auto 14px;">
+        <p class="feedback-quote">"${speech}"</p>
+        <p class="sub">— ${S.name}, en la ceremonia frente a la afición de los ${S.team.name}</p>
+      </div>
+      <button class="btn" id="ceremonyBtn" style="width:100%; max-width:340px;">Continuar →</button>
     </div>
   `);
   document.getElementById('ceremonyBtn').addEventListener('click', ()=>{
@@ -3363,9 +4609,48 @@ function renderPostCareer(){
   });
 }
 
+function computeEnding(){
+  const pc = S.postCareerPath ? S.postCareerPath.key : null;
+  if(S.everSeverelyInjured && S.seasonsPlayed <= 7)
+    return {icon:'🩹', title:'La Leyenda Interrumpida', text:`Una lesión grave se llevó lo mejor de tu carrera. Nadie sabe hasta dónde habrías llegado, pero los aficionados de los ${S.team.name} aún dicen que tu mejor año nunca llegó.`};
+  if(S.rings >= 3)
+    return {icon:'👑', title:'La Dinastía', text:`${S.rings} anillos y una época entera con tu nombre. Cuando se hable de los mejores años de los ${S.team.name}, se hablará de los tuyos.`};
+  if(S.rings >= 1 && S.mvps >= 1)
+    return {icon:'🏆', title:'Campeón y Rostro de la Liga', text:`Anillo en el dedo y el MVP en la vitrina. Fuiste el jugador que todos querían ser y el que todos querían tener.`};
+  if(S.proBowls >= 6 && S.rings === 0)
+    return {icon:'💔', title:'El Mejor Sin Anillo', text:`Seis o más Pro Bowls y todo el respeto de la liga... pero el trofeo Lombardi nunca llegó. Los debates sobre tu legado seguirán cada febrero.`};
+  if(S.seasonsPlayed >= 10 && S.proBowls === 0 && S.iq >= 55)
+    return {icon:'📋', title:'El Eterno Suplente', text: pc==='coach'
+      ? `Nunca fuiste la estrella, pero lo viste todo desde el banquillo. Ahora, con la pizarra en la mano, los jóvenes aprenden de quien más entiende el juego.`
+      : `Nunca fuiste la estrella, pero tu cerebro y tu constancia te dieron más de una década en la liga. Los coaches siempre te quisieron cerca.`};
+  if((S.teamChangesCount||0) >= 3)
+    return {icon:'✈️', title:'El Mercenario Viajero', text:`Cuatro uniformes o más. Fuiste a donde el contrato y el reto te llevaron, y en cada vestidor dejaste una historia.`};
+  if((S.teamChangesCount||0) === 0 && S.seasonsPlayed >= 9)
+    return {icon:'🛡️', title:'Un Solo Escudo', text:`Toda tu carrera con los ${S.team.name}. En tiempos de agentes libres y traspasos, tu lealtad se volvió leyenda.`};
+  if(S.fame >= 80 && S.money >= 100)
+    return {icon:'📺', title:'La Estrella Mediática', text:`Tu marca valía tanto como tu juego: patrocinios, portadas y millones de seguidores. Fuiste un fenómeno dentro y fuera del campo.`};
+  return {icon:'🏈', title:'Una Carrera que se Respeta', text:`Con altibajos, victorias y derrotas, escribiste tu propio capítulo en la NFL. Pocos pueden decir que jugaron ${S.seasonsPlayed} temporadas ahí.`};
+}
+
+function computeNickname(){
+  const cands = [
+    {v:S.clutch, n:'El Hombre de Hielo'},
+    {v:S.iq, n:'El Profesor'},
+    {v:S.durability, n:'El Roble'},
+    {v:S.fame, n:'La Superestrella'},
+    {v:S.quimica, n:'El Capitán del Vestidor'},
+    {v:Math.min(100, S.peakOvr), n:'El Prodigio'},
+  ];
+  const best = cands.sort((a,b)=>b.v-a.v)[0];
+  return best.v >= 68 ? best.n : 'El Obrero';
+}
+
 function finalizeEndScreen(){
+  S.nickname = computeNickname();
+  S.ending = computeEnding();
   saveHistoryEntry({
     name: S.name, position: pos().label, number: S.jerseyNumber, team: S.team.name,
+    teamAbbr: S.team.abbr, teamC1: S.team.c1, teamC2: S.team.c2,
     tier: S.finalTier, score: S.finalScore, seasons: S.seasonsPlayed, rings: S.rings,
     date: new Date().toISOString().slice(0,10),
   });
@@ -3375,11 +4660,11 @@ function finalizeEndScreen(){
 
 function finalTrophyVitrineHtml(){
   const items = [
-    {icon:'🏆', label:'Super Bowls Ganados', count:S.rings, color:'var(--gold)'},
-    {icon:'👑', label:'Premios MVP', count:S.mvps, color:'#f0a868'},
-    {icon:'🎖️', label:'Títulos de División', count:S.divisionTitles, color:'#7fd68f'},
-    {icon:'🥇', label:'Selecciones All-Pro', count:S.allPro, color:'#b06fe0'},
-    {icon:'⭐', label:'Selecciones Pro Bowl', count:S.proBowls, color:'#4f9dd6'},
+    {icon:icon('trophy',24,'var(--gold)'), label:'Super Bowls Ganados', count:S.rings, color:'var(--gold)'},
+    {icon:icon('crown',24,'#f0a868'), label:'Premios MVP', count:S.mvps, color:'#f0a868'},
+    {icon:icon('shield',24,'#7fd68f'), label:'Títulos de División', count:S.divisionTitles, color:'#7fd68f'},
+    {icon:icon('medal',24,'#b06fe0'), label:'Selecciones All-Pro', count:S.allPro, color:'#b06fe0'},
+    {icon:icon('star',24,'#4f9dd6'), label:'Selecciones Pro Bowl', count:S.proBowls, color:'#4f9dd6'},
   ];
   const shelves = items.map(it=>{
     const capped = Math.min(it.count, 12);
@@ -3422,26 +4707,110 @@ function checkRecords(){
     .map(c => `¡Rompiste el récord histórico de la liga en ${c.label} (${S.careerStats[c.key]})!`);
 }
 
-function shareCardHtml(){
+function ovrEvolutionSvg(){
+  const data = S.ovrHistory;
+  if(!data || data.length < 2) return '<p class="sub">No hubo suficientes temporadas para graficar tu evolución.</p>';
+  const w=600, h=180, padL=30, padR=14, padT=16, padB=28;
+  const maxOvr = Math.max(...data.map(d=>d.ovr), 70)+3;
+  const minOvr = Math.min(...data.map(d=>d.ovr), 50)-3;
+  const innerW = w-padL-padR, innerH = h-padT-padB;
+  const stepX = data.length>1 ? innerW/(data.length-1) : 0;
+  const pts = data.map((d,i)=>({
+    x: padL + i*stepX,
+    y: padT + innerH - ((d.ovr-minOvr)/(maxOvr-minOvr))*innerH,
+    ovr:d.ovr, year:d.year
+  }));
+  const linePoints = pts.map(p=>`${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(' ');
+  const areaPoints = `${padL},${padT+innerH} ${linePoints} ${pts[pts.length-1].x.toFixed(1)},${padT+innerH}`;
+  const dots = pts.map(p=>`<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="3.5" fill="var(--gold)" stroke="#0c1836" stroke-width="1.5"/>`).join('');
+  const gridLines = [0,0.5,1].map(f=>`<line x1="${padL}" y1="${padT+innerH*f}" x2="${w-padR}" y2="${padT+innerH*f}" stroke="rgba(255,255,255,.08)" stroke-width="1"/>`).join('');
   return `
-    <div id="shareCard" style="background:linear-gradient(160deg, #101d40, #0c1836); border:2px solid var(--gold); border-radius:16px; padding:26px 22px; text-align:center;">
-      <div style="font-family:'Bebas Neue',sans-serif; font-size:13px; letter-spacing:3px; color:var(--gold); margin-bottom:10px;">EL G.O.A.T. · PLATICAPATRIOT</div>
-      <div style="display:flex; justify-content:center; margin-bottom:12px;">${jerseyHtml(S.team, S.jerseyNumber, 84)}</div>
-      <div style="font-family:'Anton',sans-serif; font-size:28px; color:#fff; text-transform:uppercase;">${S.name}</div>
-      <div style="font-family:'Oswald',sans-serif; font-size:13px; color:var(--chalk-dim); margin-bottom:14px;">${pos().label} #${S.jerseyNumber} · ${S.team.name}</div>
-      <div style="font-family:'Anton',sans-serif; font-size:22px; color:var(--gold); text-transform:uppercase; margin-bottom:6px;">${S.finalTier}</div>
-      <div style="display:flex; justify-content:center; gap:16px; margin-top:12px; flex-wrap:wrap;">
-        <div><div style="font-family:'Bebas Neue',sans-serif; font-size:20px; color:#fff;">${S.rings}</div><div style="font-size:9px; color:var(--chalk-dim); letter-spacing:1px;">ANILLOS</div></div>
-        <div><div style="font-family:'Bebas Neue',sans-serif; font-size:20px; color:#fff;">${S.mvps}</div><div style="font-size:9px; color:var(--chalk-dim); letter-spacing:1px;">MVP</div></div>
-        <div><div style="font-family:'Bebas Neue',sans-serif; font-size:20px; color:#fff;">${S.proBowls}</div><div style="font-size:9px; color:var(--chalk-dim); letter-spacing:1px;">PRO BOWL</div></div>
-        <div><div style="font-family:'Bebas Neue',sans-serif; font-size:20px; color:#fff;">${S.seasonsPlayed}</div><div style="font-size:9px; color:var(--chalk-dim); letter-spacing:1px;">TEMPORADAS</div></div>
-        <div><div style="font-family:'Bebas Neue',sans-serif; font-size:20px; color:#fff;">${S.finalScore}</div><div style="font-size:9px; color:var(--chalk-dim); letter-spacing:1px;">LEGADO</div></div>
+  <svg viewBox="0 0 ${w} ${h}" style="width:100%; height:auto; display:block;">
+    <defs>
+      <linearGradient id="ovrfade" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#c8102e"/>
+        <stop offset="100%" stop-color="#c8102e" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    ${gridLines}
+    <polygon points="${areaPoints}" fill="url(#ovrfade)" opacity="0.3"/>
+    <polyline points="${linePoints}" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    ${dots}
+    <text x="${padL}" y="${h-6}" font-size="10" fill="#9aa7c4" font-family="Oswald">Año ${pts[0].year}</text>
+    <text x="${w-padR}" y="${h-6}" font-size="10" fill="#9aa7c4" font-family="Oswald" text-anchor="end">Año ${pts[pts.length-1].year}</text>
+  </svg>`;
+}
+
+function draftClassComparisonHtml(){
+  if(!S.draftClassRivals || !S.draftClassRivals.length) return '';
+  let winCount = 0;
+  const lines = S.draftClassRivals.map(r=>{
+    const beat = S.finalScore > r.score;
+    if(beat) winCount++;
+    const verb = S.finalScore===r.score ? 'Empataste con' : (beat ? 'Superaste a' : 'Quedaste por detrás de');
+    return `<div class="bullet"><span class="b-icon">${beat?'✅':'⬜'}</span><span>${verb} <b>${r.name}</b> (${r.position}), que terminó su carrera como ${r.label}.</span></div>`;
+  }).join('');
+  return `
+    <div class="divider"></div>
+    <h2 class="section">Tu Clase de Draft</h2>
+    <p class="sub" style="margin-bottom:10px;">Le ganaste a ${winCount} de ${S.draftClassRivals.length} jugadores de tu misma clase.</p>
+    <div class="bullet-list">${lines}</div>
+  `;
+}
+
+function playstyleLabel(){
+  if(S.rings>=2 && S.clutch>=65) return "El Cerrador Implacable — brillas más cuando más se juega el partido.";
+  if(S.mvps>=1) return "El Fenómeno Individual — pocas veces la liga entera se pone de acuerdo, y una de ellas fue por ti.";
+  if(S.iq>=70 && S.clutch<60) return "El Estratega Silencioso — ganas con la cabeza más que con el show.";
+  if(S.durability>=75 && S.seasonsPlayed>=12) return "El Hombre de Hierro — la durabilidad fue tu superpoder.";
+  if(S.divisionTitles>=3 && S.rings===0) return "El Casi Campeón — construiste ganadores, pero el anillo se resistió.";
+  if(S.fame>=80) return "La Estrella Mediática — tu nombre vendía boletos tanto como tus jugadas.";
+  return "El Profesional Consistente — una carrera sólida, ladrillo sobre ladrillo.";
+}
+
+const CARD_RARITIES = [
+  {min:210, name:'Holográfica', border:'linear-gradient(135deg,#ff6ec4,#7873f5,#4ade80,#facc15,#ff6ec4)', accent:'#f0b8ff', holo:true},
+  {min:155, name:'Oro', border:'linear-gradient(135deg,#f6d365,#d7ad3f,#fff1b0,#b8860b)', accent:'#f6d365'},
+  {min:105, name:'Plata', border:'linear-gradient(135deg,#f3f6fb,#9aa7c4,#ffffff,#7d8aa6)', accent:'#dfe5f2'},
+  {min:65, name:'Bronce', border:'linear-gradient(135deg,#e0a46b,#a9693a,#f2c9a0,#8a4f26)', accent:'#e0a46b'},
+  {min:-999, name:'Roster', border:'linear-gradient(135deg,#6b7590,#38405a,#8a93ad)', accent:'#9aa7c4'},
+];
+function cardRarity(){ return CARD_RARITIES.find(r=>S.finalScore>=r.min); }
+
+function shareCardHtml(){
+  const r = cardRarity();
+  const ending = S.ending || computeEnding();
+  const stat = (v,k)=>`<div style="text-align:center;"><div style="font-family:'Bebas Neue',sans-serif; font-size:22px; color:#fff; line-height:1;">${v}</div><div style="font-size:9px; color:var(--chalk-dim); letter-spacing:1px; margin-top:2px;">${k}</div></div>`;
+  return `
+    <div id="shareCard" class="${r.holo?'holo-card':''}" style="background:${r.border}; padding:5px; border-radius:20px; position:relative;">
+      <div style="background:linear-gradient(165deg, ${S.team.c2} -40%, #0c1836 55%, #080f24); border-radius:16px; padding:18px 18px 20px; text-align:center; position:relative; overflow:hidden;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+          <div style="text-align:left;">
+            <div style="font-family:'Anton',sans-serif; font-size:44px; line-height:1; color:${r.accent};">${Math.round(S.peakOvr)}</div>
+            <div style="font-size:9px; letter-spacing:2px; color:var(--chalk-dim);">NIVEL PICO</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'Bebas Neue',sans-serif; font-size:12px; letter-spacing:3px; color:${r.accent};">EL G.O.A.T.</div>
+            <div style="font-size:9px; letter-spacing:2px; color:var(--chalk-dim);">PLATICAPATRIOT</div>
+            <div style="margin-top:6px; display:inline-block; padding:2px 8px; border-radius:10px; font-size:10px; letter-spacing:1.5px; font-weight:700; color:#0c1836; background:${r.border};">${r.name.toUpperCase()}</div>
+          </div>
+        </div>
+        <div style="display:flex; justify-content:center; margin:6px 0 8px;">${jerseyHtml(S.team, S.jerseyNumber, 92)}</div>
+        <div style="font-family:'Anton',sans-serif; font-size:28px; color:#fff; text-transform:uppercase; line-height:1.1;">${S.name}</div>
+        ${S.nickname ? `<div style="font-size:12px; color:${r.accent}; font-style:italic; margin-top:2px;">«${S.nickname}»</div>` : ''}
+        <div style="font-family:'Oswald',sans-serif; font-size:13px; color:var(--chalk-dim); margin-bottom:10px;">${pos().label} #${S.jerseyNumber} · ${S.team.name}</div>
+        <div style="font-family:'Anton',sans-serif; font-size:19px; color:${r.accent}; text-transform:uppercase; margin-bottom:2px;">${S.finalTier}</div>
+        <div style="font-size:12px; color:var(--chalk); margin-bottom:12px;">${ending.icon} ${ending.title}</div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px 8px; border-top:1px solid rgba(255,255,255,.12); padding-top:12px;">
+          ${stat(S.rings,'ANILLOS')}${stat(S.mvps,'MVP')}${stat(S.proBowls,'PRO BOWL')}${stat(S.allPro,'ALL-PRO')}${stat(S.seasonsPlayed,'TEMP.')}${stat(S.finalScore,'LEGADO')}
+        </div>
       </div>
     </div>
   `;
 }
 
 function renderEnd(){
+  if((S.achievements||[]).length) playAchievementSound();
   const tl = S.timeline.slice(-10).map(t=>`<div><span class="yr">${t.yr}:</span> ${t.text}</div>`).join('');
   const careerStatChips = Object.keys(S.careerStats).map(k=>`
     <div class="stat"><div class="v">${S.careerStats[k]}</div><div class="k">${k}</div></div>
@@ -3462,6 +4831,7 @@ function renderEnd(){
   el(`
     <div class="eyebrow">${S.isDaily ? `Carrera del Día · ${S.dailySeedLabel}` : '¿Llegaste a la estatua?'}</div>
     <h1 class="display">${S.name}</h1>
+    ${S.nickname ? `<p class="sub" style="margin:-6px 0 10px; color:var(--gold); font-weight:600;">«${S.nickname}»</p>` : ""}
     <div class="team-row">${jerseyHtml(S.team, S.jerseyNumber, 64)}<div class="tname" style="font-size:16px;">${pos().label} #${S.jerseyNumber}<small>${S.seasonsPlayed} temporadas · Pico de nivel ${Math.round(S.peakOvr)}</small></div></div>
     <div class="hof-banner">
       <div class="eyebrow" style="margin:0;">Veredicto</div>
@@ -3469,15 +4839,25 @@ function renderEnd(){
       <p class="sub" style="max-width:480px;margin:0 auto;">${S.finalTierDesc}</p>
       ${S.finalScore >= 155 ? `<button class="btn" id="hofBtn" style="margin-top:14px;">🏛️ Ver tu Inducción a Canton</button>` : ''}
     </div>
+    <div class="card ending-card">
+      <div class="cinematic-kicker" style="margin-bottom:6px;">Tu final</div>
+      <div class="ending-title">${(S.ending||computeEnding()).icon} ${(S.ending||computeEnding()).title}</div>
+      <p class="sub" style="margin:6px 0 0; color:var(--chalk);">${(S.ending||computeEnding()).text}</p>
+    </div>
     <div class="card">
       <h2 class="section">${S.closingLine}</h2>
       ${S.postCareerPath ? `<p class="sub">${S.postCareerPath.icon} Después de retirarte, tu camino fue el de <b style="color:var(--chalk);">${S.postCareerPath.name}</b>: ${S.postCareerPath.desc}</p>` : ''}
+      <p class="sub" style="margin-top:8px;">🏷️ ${playstyleLabel()}</p>
       <div class="meta-row" style="margin-top:10px;">
         <span class="chip">Puntaje de Legado <b>${S.finalScore}</b></span>
         <span class="chip">Ganancias de Carrera <b>$${S.money}M USD</b></span>
       </div>
       ${records.length ? `<div class="divider"></div><div class="bullet-list">${records.map(r=>`<div class="bullet" style="border-left-color:var(--gold);">🏈 ${r}</div>`).join('')}</div>` : ''}
       ${achievementsHtml}
+      ${draftClassComparisonHtml()}
+      <div class="divider"></div>
+      <h2 class="section">Tu Evolución Año a Año</h2>
+      ${ovrEvolutionSvg()}
       <div class="divider"></div>
       <h2 class="section">Estadísticas de toda tu Carrera</h2>
       <div class="statbar" style="margin-bottom:16px;">${careerStatChips}</div>
@@ -3497,7 +4877,7 @@ function renderEnd(){
       </div>
     </div>
     <div class="card" style="text-align:center;">
-      <p class="sub" style="margin-bottom:12px;">¿Te gustó el simulador? Podés invitarme un café para seguir mejorándolo.</p>
+      <p class="sub" style="margin-bottom:12px;">¿Te gustó el simulador? Puedes invitarme un café para seguir mejorándolo.</p>
       <a href="https://www.paypal.com/ncp/payment/JWNYCGQ3SMW7J" target="_blank" rel="noopener" class="btn secondary" style="width:100%; display:block; text-decoration:none; text-align:center;">☕ Apoyar el Proyecto</a>
     </div>
     <p class="sub" style="text-align:center; opacity:.7;">Simulador no oficial hecho por fans. No está afiliado a la NFL ni a ninguna de sus franquicias.</p>
@@ -3529,12 +4909,12 @@ function renderHofInduction(){
       const color = colors[Math.floor(Math.random()*colors.length)];
       return `<div class="confetti-piece" style="left:${left}%; animation-delay:${delay}s; animation-duration:${dur}s; background:${color};"></div>`;
     }).join('')}</div>
-    <div class="eyebrow">Canton, Ohio · ${yearsLater} años después</div>
-    <h1 class="display">Inducción al <span>Salón de la Fama</span></h1>
-    <div class="card" style="text-align:center;">
-      <div style="font-size:64px; margin-bottom:10px;">🏛️</div>
-      <p class="lead">${yearsLater} años después de colgar los botines, ${S.name} camina hasta el podio en Canton. Se descubre el busto de bronce con tu rostro, y tu gafete queda junto al de las leyendas que definieron esta liga.</p>
-      <div class="feedback-block">
+    <div class="cinematic">
+      <div class="cinematic-kicker">Canton, Ohio · ${yearsLater} años después</div>
+      <div style="margin-bottom:10px;">${icon('trophy',72,'var(--gold)')}</div>
+      <h1 class="cinematic-hero">Salón de<br>la Fama</h1>
+      <p class="lead" style="max-width:520px; margin:0 auto 16px;">${yearsLater} años después de colgar los botines, ${S.name} camina hasta el podio en Canton. Se descubre el busto de bronce con tu rostro, y tu gafete queda junto al de las leyendas que definieron esta liga.</p>
+      <div class="feedback-block" style="text-align:left; max-width:520px; margin:0 auto 14px;">
         <p class="feedback-quote">"Nunca jugué pensando en este momento. Jugué por mis compañeros, por mi ciudad, por el amor a este juego. Pero estar aquí, hoy, con mi gafete dorado... eso no tiene precio."</p>
         <p class="sub">— ${S.name}, discurso de inducción</p>
       </div>
@@ -3544,12 +4924,16 @@ function renderHofInduction(){
         <span class="chip">Pro Bowls <b>${S.proBowls}</b></span>
         <span class="chip">Puntaje de Legado <b>${S.finalScore}</b></span>
       </div>
-      <button class="btn" id="hofBackBtn" style="width:100%; margin-top:16px;">← Volver al Reporte Final</button>
+      <button class="btn" id="hofBackBtn" style="width:100%; max-width:340px; margin-top:16px;">← Volver al Reporte Final</button>
     </div>
   `);
   document.getElementById('hofBackBtn').addEventListener('click', ()=>{ S.screen='end'; render(); });
 }
 
+document.getElementById('app').addEventListener('click', e=>{
+  if(soundMode()==='all') startMusic();
+  if(e.target.closest && e.target.closest('.choice-btn, .btn, .archetype-card, .offer-card, .pos-btn')) playTone(520,0.04,'triangle',0,0.05);
+});
 newGame();
 })();
 </script>
