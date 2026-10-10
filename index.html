@@ -4809,6 +4809,26 @@ function shareCardHtml(){
   `;
 }
 
+const BENCHMARK_SCORES = [51, 52, 52, 53, 53, 53, 53, 53, 53, 55, 55, 55, 56, 56, 57, 57, 57, 57, 57, 57, 58, 58, 58, 58, 58, 58, 59, 59, 59, 59, 59, 60, 60, 61, 61, 61, 62, 62, 62, 62, 62, 62, 63, 63, 63, 63, 63, 64, 64, 64, 64, 65, 65, 66, 66, 66, 66, 66, 67, 67, 67, 67, 68, 68, 68, 68, 68, 69, 69, 69, 69, 69, 69, 69, 70, 70, 71, 71, 71, 71, 71, 72, 72, 72, 72, 72, 72, 73, 73, 73, 73, 73, 74, 74, 74, 74, 74, 75, 75, 75, 75, 75, 76, 76, 76, 76, 77, 77, 77, 78, 78, 78, 78, 79, 79, 79, 80, 80, 80, 81, 81, 82, 82, 82, 82, 83, 83, 83, 83, 83, 84, 84, 84, 84, 85, 85, 86, 87, 87, 87, 87, 87, 88, 89, 89, 89, 89, 89, 89, 90, 90, 90, 91, 91, 92, 93, 93, 93, 93, 93, 93, 93, 93, 93, 94, 94, 95, 95, 95, 96, 97, 97, 97, 98, 98, 99, 99, 99, 99, 100, 100, 100, 100, 100, 101, 101, 101, 101, 101, 102, 102, 102, 103, 103, 104, 105, 105, 105, 105, 105, 106, 107, 107, 107, 108, 108, 108, 108, 108, 108, 109, 109, 109, 109, 110, 110, 111, 111, 112, 113, 113, 113, 113, 114, 114, 114, 116, 116, 116, 117, 119, 119, 119, 119, 120, 120, 120, 122, 122, 122, 122, 122, 122, 125, 128, 128, 128, 129, 129, 129, 130, 130, 131, 131, 132, 133, 133, 134, 135, 135, 136, 137, 137, 138, 139, 139, 140, 140, 141, 141, 141, 141, 143, 144, 144, 145, 146, 147, 147, 148, 149, 149, 149, 149, 150, 150, 152, 152, 153, 155, 156, 159, 159, 161, 162, 163, 164, 164, 165, 165, 166, 167, 168, 170, 170, 173, 173, 176, 177, 180, 181, 183, 185, 186, 187, 187, 189, 190, 193, 194, 194, 194, 197, 197, 197, 208, 211, 212, 212, 214, 220, 224, 226, 227, 227, 229, 231, 233, 233, 239, 246, 252, 265, 268, 269, 283, 288, 310, 335, 341];
+function benchmarkHtml(){
+  const hofMult = (DIFFICULTY_PRESETS[S.difficulty]||DIFFICULTY_PRESETS.veterano).hofMult;
+  const raw = S.finalScore * hofMult;
+  const n = BENCHMARK_SCORES.length;
+  const below = BENCHMARK_SCORES.filter(x=>x < raw).length;
+  const pct = Math.min(99, Math.max(1, Math.round(below/n*100)));
+  const share = th => Math.max(1, Math.round(BENCHMARK_SCORES.filter(x=>x>=th).length/n*100));
+  return `
+    <div class="card">
+      <h2 class="section">¿Qué tan rara fue tu carrera?</h2>
+      <p class="lead" style="margin-bottom:10px;">Tu legado supera al <b style="color:var(--gold);">${pct}%</b> de las carreras de referencia.</p>
+      <div class="meta-row">
+        <span class="chip">Llegan a "A un voto de la estatua" <b>${share(155)}%</b></span>
+        <span class="chip">Se ganan la estatua <b>${share(210)}%</b></span>
+      </div>
+      <p class="sub" style="margin-top:10px; opacity:.75;">Referencia: ${n} carreras simuladas con decisiones al azar en dificultad Veterano. No son datos de otros jugadores; con buenas decisiones se puede superar a la mayoría.</p>
+    </div>`;
+}
+
 function renderEnd(){
   if((S.achievements||[]).length) playAchievementSound();
   const tl = S.timeline.slice(-10).map(t=>`<div><span class="yr">${t.yr}:</span> ${t.text}</div>`).join('');
@@ -4863,6 +4883,7 @@ function renderEnd(){
       <div class="statbar" style="margin-bottom:16px;">${careerStatChips}</div>
     </div>
     ${finalTrophyVitrineHtml()}
+    ${benchmarkHtml()}
     <div class="card">
       <h2 class="section">Tarjeta para Compartir</h2>
       ${shareCardHtml()}
