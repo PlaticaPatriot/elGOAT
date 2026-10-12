@@ -681,6 +681,7 @@ body[data-stage="leyenda"]::before{
 body[data-stage="consagrado"] .site-header, body[data-stage="leyenda"] .site-header{ border-bottom-color:rgba(215,173,63,.55); }
 body[data-stage="leyenda"] .player-card{ box-shadow:0 0 0 1px rgba(215,173,63,.45), 0 8px 30px rgba(215,173,63,.12); }
 button.header-donate-btn{ font-size:16px; }
+.lang-btn{ font-family:'Bebas Neue',sans-serif; font-size:15px !important; letter-spacing:1px; color:var(--chalk); }
 @media (prefers-reduced-motion: reduce){ body::before{ transition:none; } }
 .badges-box{margin-top:14px; border:1px solid var(--turf-line); border-radius:12px; padding:10px 12px; background:rgba(255,255,255,.02);}
 .badges-box summary{cursor:pointer; font-weight:600; font-size:14px; list-style:none;}
@@ -972,7 +973,7 @@ button.header-donate-btn{ font-size:16px; }
   .cinematic-kicker{font-size:12px;}
   .sub{font-size:13px;}
 }
-@media (max-width:360px){ .site-header{gap:8px;} .site-header img{width:40px;height:40px;} .site-header .brand{font-size:14px; letter-spacing:.5px;} .site-header .brand small{letter-spacing:1px; font-size:9px;} }
+@media (max-width:360px){ .site-header{gap:6px;} .header-donate-btn{width:32px; height:32px;} .site-header img{width:40px;height:40px;} .site-header .brand{font-size:14px; letter-spacing:.5px;} .site-header .brand small{letter-spacing:1px; font-size:9px;} }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
@@ -2125,6 +2126,7 @@ function siteHeader(){
       <img src="${LOGO_DATA_URI}" alt="PlaticaPatriot">
       <div class="brand">PLATICAPATRIOT<small>El G.O.A.T. — Simulador de Carrera</small></div>
       <button class="header-donate-btn" id="soundBtn" title="${soundTitle()}" aria-label="Sonido: ${soundTitle()}" style="font-family:inherit; color:var(--chalk); padding:0;">${soundGlyph()}</button>
+      <a href="en/" class="header-donate-btn lang-btn" id="langBtn" title="Switch to English" aria-label="Switch to English" hreflang="en" lang="en">EN</a>
       <a href="https://x.com/PlaticaPatriot" target="_blank" rel="noopener" class="header-donate-btn" title="Síguenos en X: @PlaticaPatriot" aria-label="Síguenos en X: @PlaticaPatriot"><svg viewBox="0 0 24 24" width="16" height="16" fill="var(--chalk)" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
       <a href="https://www.paypal.com/ncp/payment/JWNYCGQ3SMW7J" target="_blank" rel="noopener" class="header-donate-btn" title="Apoyar el proyecto">${icon('coffee',18,'var(--gold)')}</a>
     </div>
